@@ -214,6 +214,7 @@
     <Compile Include="Models\ItemModel.cs" />
     <Compile Include="Models\LoginCompradorModel.cs" />
     <Compile Include="Models\LoginVendedorModel.cs" />
+    <Compile Include="Models\LoginViewModel.cs" />
     <Compile Include="Models\Notificacao.cs" />
     <Compile Include="Models\PedidoModel.cs" />
     <Compile Include="Models\SessionExpireFilterAttribute.cs" />
@@ -2169,6 +2170,7 @@
     <Content Include="Views\Site\ComoFunciona.cshtml" />
     <Content Include="Views\Cadastro\Index.cshtml" />
     <Content Include="Views\Cadastro\Cadastros.cshtml" />
+    <Content Include="Views\Cadastro\LoginViewModel.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

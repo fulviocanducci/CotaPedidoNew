@@ -60,6 +60,7 @@ namespace CoaPedido.WebUI.Controllers
         }
         #endregion
 
+        #region CadastroSiteComprador
         [HttpGet]
         [Route("cadastro/comprador", Name = "CadastroCompradorGet")]
         public ActionResult Comprador(string link = null)
@@ -114,6 +115,7 @@ namespace CoaPedido.WebUI.Controllers
             ViewBag.RouteNamePost = "CadastroCompradorPost";
             return View("Cadastros", master);
         }
+        #endregion
 
         #region Comments
         //[HttpPost]
@@ -237,6 +239,8 @@ namespace CoaPedido.WebUI.Controllers
 
         #endregion
 
+        #region CadastroSiteVendedor
+
         [HttpGet]
         [Route("cadastro/vendedor", Name = "CadastroVendedorGet")]
         public ActionResult Vendedor(string link = null)
@@ -298,6 +302,7 @@ namespace CoaPedido.WebUI.Controllers
             ViewBag.RouteNamePost = "CadastroVendedorPost";
             return View("Cadastros", master);
         }
+        #endregion
 
         #region Comments2
         //[HttpPost]
@@ -411,6 +416,26 @@ namespace CoaPedido.WebUI.Controllers
             return View(model);
         }
         #endregion
+
+
+        [HttpGet()]
+        [Route("login", Name = "LoginViewModelRouteGet")]
+        public ActionResult LoginViewModel()
+        {
+            return View();
+        }
+
+        [HttpPost()]
+        [Route("login", Name = "LoginViewModelRoutePost")]
+        [ValidateAntiForgeryToken]        
+        public ActionResult LoginViewModel(CotaPedido.WebUI.Models.LoginViewModel model)
+        {            
+            if (ModelState.IsValid)
+            {
+
+            }
+            return View(model);
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]

@@ -2,7 +2,7 @@
 
 namespace CotaPedido.WebUI.Models
 {
-    public class LoginVendedorModel
+    public class LoginViewModel
     {
         [Display(Name = "E-Mail")]
         [StringLength(200, ErrorMessage = "O campo E-Mail não pode conter mais do que 200 caracteres")]
