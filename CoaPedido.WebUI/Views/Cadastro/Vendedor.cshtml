@@ -1,0 +1,108 @@
+﻿@model ViewModelCadastro
+@{
+  ViewBag.Title = "Registro Vendedor";
+}
+<div class="container">
+  <div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12">
+      <h2 class="title">ACESSO VENDEDOR</h2>
+    </div>
+  </div>
+  <div class="col-lg-8 col-md-8 col-sm-8">
+    <span class="title">VENDEDOR AINDA NÃO POSSUI CADASTRO?</span>
+    <p>PREENCHA TODOS OS CAMPOS ABAIXO, E VENHA FATURAR</p>
+    <!-- Form Register -->
+    @if (!ViewData.ModelState.IsValid && Model != null && Model != null)
+    {
+      <div class="row">
+        <div class="col-md-12 col-lg-12 col-sm-12">
+          <div class="alert alert-dismissable alert-danger">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            @Html.ValidationSummary()
+          </div>
+        </div>
+      </div>
+    }
+
+    @if (TempData["Success"] != null)
+    {
+      <div class="row">
+        <div class="col-md-12 col-lg-12 col-sm-12">
+          <div class="alert alert-dismissable alert-success">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <ul><li>Vendedor cadastrado com sucesso!</li></ul>
+          </div>
+        </div>
+      </div>
+    }
+
+    @using (Html.BeginForm("Vendedor", "Cadastro", FormMethod.Post))
+    {
+      @Html.Partial("_CadastroReduzido", Model)
+    }
+  </div>
+
+  <div class="col-lg-4 col-md-4 col-sm-4">
+    @Html.Partial("_LoginVendedor", Model)
+  </div>
+</div>
+
+@section Scripts{
+  @Scripts.Render("~/bundles/jqueryval")
+  @Scripts.Render("~/Cadastro")
+  <script>
+      function get_last_email_login() {
+        var email = window.localStorage.getItem('site_email_login');
+        if (email && email !== '') {
+            $("#LoginVendedorModel_Email").val(email);
+        }
+      };
+      function call_cidade_get_uf_id(id, callBack) {
+      $.post("@Url.RouteUrl("CadastroListaCidadeByIdUf")", { id: id })
+        .done(function (data) { callBack(data) })
+        .catch(function (error) {
+          console.error(error);
+        })
+    };
+    function call_uf() {
+      $("#IdCidade").html('<option>Carregando ...</option>');
+            $("#IdCidade").attr('disabled', true);
+            new call_cidade_get_uf_id($("#inputUF").val(), function (response) {
+              var html = "";
+              $.each(response, function (indice, item) {
+                html = html + '<option value="' + item.Id + '">' + item.Nome + '</option>';
+              })
+              $("#IdCidade").removeAttr('disabled');
+              $("#IdCidade").html(html);
+            });
+    };
+    $(document).ready(function () {
+          get_last_email_login();
+          $("#LoginVendedorModel_Email").blur(function () {
+              window.localStorage.setItem('site_email_login', $(this).val());
+          });
+        if ($("#inputUF").length > 0) {
+          $("#inputUF").change(function () {
+            call_uf();
+          });
+      }
+      if ($("#inputUF").val()) {
+        call_uf();
+      }
+      //if ($("#inputUF2").length > 0) {
+      //  $("#inputUF2").change(function () {
+      //    $("#IdCidadeCobranca").html('<option>Carregando ...</option>');
+      //    $("#IdCidadeCobranca").attr('disabled', true);
+      //    new call_cidade_get_uf_id($("#inputUF2").val(), function (response) {
+      //      var html = "";
+      //      $.each(response, function (indice, item) {
+      //        html = html + '<option value="' + item.Id + '">' + item.Nome + '</option>';
+      //      })
+      //      $("#IdCidadeCobranca").removeAttr('disabled');
+      //      $("#IdCidadeCobranca").html(html);
+      //    });
+      //  });
+      //}
+    });
+  </script>
+}

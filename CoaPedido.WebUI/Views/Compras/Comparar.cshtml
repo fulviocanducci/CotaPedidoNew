@@ -1,0 +1,132 @@
+﻿@model PedidoModel
+
+@{
+    ViewBag.Title = "Comparar Cotações";
+}
+
+<div class="container" id="divToPrint">
+    <div class="col-lg-12 col-md-12 col-sm-12">
+        <div class="white-container">
+            <div class="row">
+                <div class="col-lg-12 col-sm-12 hero-feature">
+                    <h4 class="title">COMPARAR COTAÇÕES</h4>
+                </div>
+            </div>
+
+            @if (!ViewData.ModelState.IsValid)
+            {
+            <div class="row">
+                <div class="col-md-12 col-lg-12 col-sm-12">
+                    <div class="alert alert-dismissable alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">×</button>
+                        @Html.ValidationSummary()
+                    </div>
+                </div>
+            </div>
+            }
+
+            <div class="row">
+                <div class="col-lg-12 col-sm-12 hero-feature">
+                    <table class="table table-bordered tbl-checkout">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <span><b>Código do Pedido</b></span><br />
+                                    @Model.Id
+                                </td>
+                                <td>
+                                    <span><b>Data do Pedido</b></span><br />
+                                    @Model.DataPedido
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span><b>Categoria Principal</b></span><br />
+                                    @Model.CategoriaPrincipal
+                                </td>
+                                <td>
+                                    <span><b>Data Limite para Propostas</b></span><br />
+                                    @Model.DataLimiteProposta
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clearfix visible-sm"></div>
+    <!-- Catalogue -->
+    <div class="col-lg-12 col-sm-12 hero-feature">
+        <div class="white-container">
+            <table class="table table-bordered comparison">
+                <thead>
+                    <tr>
+                        <td colspan="5"><span class="title">COTAÇÕES</span></td>
+                        @{
+                            var checkBoxes = Model.ItensCotacao.Select(i => i.IdCotacao).Distinct().ToList();
+                            foreach (var checkBox in checkBoxes)
+                            {
+                                <td style="text-align:center"><input type="radio" class="checkboxEscolhido" name="cotacao" value="@checkBox" /></td>
+                            }
+                        }
+                    </tr>
+                    <tr>
+                        <td class="compare-product">Itens</td>
+                        <td class="compare-product col-categoria">Subcategoria</td>
+                        <td class="compare-product col-subcategoria">Produto</td>
+                        <td class="compare-product">Quantidade</td>
+                        <td class="compare-product">Unidade</td>
+                        <td colspan="3" class="compare-product">Valor Unitário</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Itens)
+                    {
+                        var cotacoesItem = Model.ItensCotacao.Where(ic => ic.IdItem == item.Id).ToList();
+                        <tr>
+                            <td>@item.Id</td>
+                            <td class="col-categoria">@item.SubCategoria.Nome</td>
+                            <td class="col-subcategoria">@item.NomeProduto</td>
+                            <td>@item.Quantidade</td>
+                            <td>@item.Unidade.Descricao</td>
+                            @foreach (var cotacao in cotacoesItem)
+                            {
+                                var cor = cotacao.ValorUnitario == cotacoesItem.Min(c => c.ValorUnitario) ? "green;" : "red;";
+                                <td style="color:@cor;">@string.Format("{0:0.00}", cotacao.ValorUnitario)</td>
+                            }
+                        </tr>
+                    }
+                    <tr>
+                        <td colspan="5">Total</td>
+                        @foreach (var totalUnitario in Model.TotaisUnitarios)
+                        {
+                            var cor = totalUnitario == Model.TotaisUnitarios.Min() ? "green;" : "red;";
+                            <td style="color:@cor;">@string.Format("{0:0.00}", totalUnitario)</td>
+                        }
+                    </tr>
+                    <tr id="btnLine">
+                        @using (Html.BeginForm("Comparar", "Compras", FormMethod.Post))
+                        {
+                            <input type="hidden" name="idCotacao" id="cotacaoEscolhida" value="0" />
+                            <input type="hidden" name="idPedido" value="@Model.Id" />
+
+                            <td colspan="8">
+                                @if (Model.SituacaoPedido == SituacaoPedido.EmAberto)
+                                {
+                                    <button type="submit" class="btn btn-primary">Confirmar</button>
+                                }
+                                <button type="button" onclick="PrintDiv()" class="btn btn-primary">Imprimir</button>
+                            </td>
+                        }
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!-- End Catalogue -->
+</div>
+
+@section Scripts{
+    @Scripts.Render("~/CompararCotacoes")
+}

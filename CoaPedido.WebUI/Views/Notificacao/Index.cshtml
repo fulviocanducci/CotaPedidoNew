@@ -1,0 +1,145 @@
+﻿@{ ViewBag.Title = "Notificações"; Layout = "~/Views/Shared/_Layout.cshtml"; }
+<div class="container">
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-116846057-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'UA-116846057-1');
+  </script>
+
+  @using (Html.BeginForm("Save", "Notificacao", FormMethod.Post, new { OnSubmit = "return SubmitFormVerify()" }))
+  {
+    @Html.AntiForgeryToken();
+    <div class="col-lg-12 col-md-12 col-sm-12">
+      <div class="white-container">
+        <div class="row">
+          <div class="col-lg-12 col-sm-12 hero-feature">
+            <h4 class="title">NOTIFICAÇÕES</h4>
+          </div>
+        </div>
+      </div>
+      @if (ViewBag.Status != null)
+      {
+        <div class="row">
+          <div class="col-md-12 col-lg-12 col-sm-12">
+            <div class="alert alert-dismissable alert-success">
+              <button type="button" class="close" data-dismiss="alert">×</button>
+              <ul><li>Notificação @ViewBag.Status</li></ul>
+            </div>
+          </div>
+        </div>
+      }
+      <div class="row">
+        <div class="col-lg-12 col-sm-12 hero-feature">
+          @Html.Hidden("Id")
+          @Html.Hidden("VendedorId")
+          <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+              <table class="table table-bordered tbl-checkout">
+                <tbody>
+                  <tr>
+                    <td style="width: 45%;">
+                      <span>Categoria:</span><br />
+                      @Html.DropDownList("Categoria", null, new { id = "categoria", @class = "form-control" })
+                    </td>
+                    <td style="width: 45%;">
+                      <span>Área de Atuação:</span><br />
+                      @Html.DropDownList("AreadeAtuacao", null, string.Empty, new { id = "areadeatuacao", @class = "form-control" })
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+              <table class="table table-bordered tbl-checkout">
+                <tbody>
+                  <tr>
+                    <td style="width: 45%;">
+                      <span>Sub-Categoria:</span><br />
+                      @Html.DropDownList("SubCategoria", null, string.Empty, new { id = "subcategoria", @class = "form-control" })
+                    </td>
+                    <td style="width: 45%;">
+                      <span>Valor:</span><br />
+                      @Html.DropDownList("Valor", null, string.Empty, new { id = "valor", @class = "form-control select2" })
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="col-lg-12 col-md-12 col-sm-12 text-right">
+              @if (@ViewBag.Btn != "Alterar")
+              {
+                <button class="btn btn-primary" @(ViewBag.BtnIsAssinante != null && (Convert.ToBoolean(ViewBag.BtnIsAssinante)) ? "" : "disabled=\"disabled\"")>@ViewBag.Btn</button>
+              }
+              @if (@ViewBag.Btn == "Alterar")
+              {
+                <button class="btn btn-primary">@ViewBag.Btn</button>
+                <button onclick="window.location=href='/Notificacao'" type="button" class="btn btn-primary">Cancelar</button>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+      <br />
+      @Html.Partial("_ListaNotificacoes", (IList<AvisoViewModel>)ViewBag.AvisosFromVendedor)
+    </div>
+  }
+</div>
+@section Scripts{
+  <script>
+    function SubmitFormVerify() {
+      var categoria = $("#categoria").val();
+      var areadeatuacao = $("#areadeatuacao").val();
+      var valor = $("#valor").val();
+      if (categoria == "" || areadeatuacao == "" || valor == "") {
+        var msg = "";
+        if (categoria == "") msg = msg + "Escolha a Categoria\r\n";
+        if (areadeatuacao == "") msg = msg + "Escolha a Area de Atuação\r\n";
+        if (valor == "") msg = msg + "Escolha o Valor\r\n";
+        alert(msg);
+        return false;
+      }
+      return true;
+    }
+    $(document).ready(function () {
+      const selectValor = $('#valor').select2();
+      $("#categoria").change(function () {
+        $("#subcategoria").empty();
+        if ($(this).val() != '') {
+          $("#subcategoria").html('<option>Carregando ... </option>');
+          $.getJSON('/Notificacao/GetSubCategoria', { id: $(this).val() }, function (result) {
+            $("#subcategoria").empty();
+            var html = '<option value=""></option>';
+            $.each(result, function (idx, value) {
+              html = html + '<option value="' + value.Id + '">' + value.Nome + '</option>';
+            })
+            $("#subcategoria").html(html);
+          });
+        }
+      });
+      $("#areadeatuacao").change(function () {
+        selectValor.val(null).trigger("change");        
+        let initValue = null;
+        $("#valor").empty();
+        if ($(this).val() != '') {
+          $("#valor").html('<option>Carregando ... </option>');
+          $.getJSON('/Notificacao/GetValor', { id: $(this).val() }, function (result) {
+            $("#valor").empty();
+            var html = '';
+            $.each(result, function (idx, value) {
+              if (initValue === null) initValue = value.Id;
+              html = html + '<option value="' + value.Id + '">' + value.Nome + '</option>';
+            })
+            $("#valor").html(html);                        
+            selectValor.val(initValue).trigger("change");
+            selectValor.select2('open');            
+          });
+        }
+      });
+    })
+  </script>
+}

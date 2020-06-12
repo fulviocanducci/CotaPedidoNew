@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{7473FD22-05CE-456D-BF19-E9E98DF82988}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CotaPedido.EntityFramework</RootNamespace>
+    <AssemblyName>CotaPedido.EntityFramework</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Migrations\201509112333246_Initial.cs" />
+    <Compile Include="Migrations\201509112333246_Initial.Designer.cs">
+      <DependentUpon>201509112333246_Initial.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\COTAPEDIDOContext.cs" />
+    <Compile Include="Models\Mapping\AnexoItemMap.cs" />
+    <Compile Include="Models\Mapping\AnexoPedidoMap.cs" />
+    <Compile Include="Models\Mapping\AssinaturaMap.cs" />
+    <Compile Include="Models\Mapping\BuscaMap.cs" />
+    <Compile Include="Models\Mapping\CidadeMap.cs" />
+    <Compile Include="Models\Mapping\CompradorMap.cs" />
+    <Compile Include="Models\Mapping\CotacaoMap.cs" />
+    <Compile Include="Models\Mapping\EmbalagemMap.cs" />
+    <Compile Include="Models\Mapping\GrupoMap.cs" />
+    <Compile Include="Models\Mapping\ItensCotacoMap.cs" />
+    <Compile Include="Models\Mapping\ItemPedidoMap.cs" />
+    <Compile Include="Models\Mapping\MensalidadeMap.cs" />
+    <Compile Include="Models\Mapping\PedidoMap.cs" />
+    <Compile Include="Models\Mapping\RegiaoMap.cs" />
+    <Compile Include="Models\Mapping\SubGrupoMap.cs" />
+    <Compile Include="Models\Mapping\UnidadeMap.cs" />
+    <Compile Include="Models\Mapping\VendedorMap.cs" />
+    <Compile Include="Models\Mapping\VendedorRegiaoMap.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="Content\bootstrap-theme.css.map" />
+    <None Include="Content\bootstrap-theme.min.css.map" />
+    <None Include="Content\bootstrap.css.map" />
+    <None Include="Content\bootstrap.min.css.map" />
+    <None Include="fonts\glyphicons-halflings-regular.eot" />
+    <None Include="fonts\glyphicons-halflings-regular.ttf" />
+    <None Include="fonts\glyphicons-halflings-regular.woff" />
+    <None Include="fonts\glyphicons-halflings-regular.woff2" />
+    <None Include="packages.config" />
+    <None Include="Scripts\jquery-3.1.0.min.map" />
+    <None Include="Scripts\jquery-3.1.0.slim.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CotaPedido.Entidades\CotaPedido.Entidades.csproj">
+      <Project>{46963851-28a6-4e77-bb5b-b042123d90b0}</Project>
+      <Name>CotaPedido.Entidades</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201509112333246_Initial.resx">
+      <DependentUpon>201509112333246_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\bootstrap-theme.css" />
+    <Content Include="Content\bootstrap-theme.min.css" />
+    <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap.min.css" />
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\jquery-3.1.0.intellisense.js" />
+    <Content Include="Scripts\jquery-3.1.0.js" />
+    <Content Include="Scripts\jquery-3.1.0.min.js" />
+    <Content Include="Scripts\jquery-3.1.0.slim.js" />
+    <Content Include="Scripts\jquery-3.1.0.slim.min.js" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,18 @@
+﻿@model CompradorModel
+@{
+    ViewBag.Title = "Registro Comprador";
+}
+
+<div class="container">
+    <div class="col-lg-8 col-md-8 col-sm-8">
+         @Html.Partial("_CadastroComprador", Model)
+    </div>
+    <div class="col-lg-4 col-md-4 col-sm-4">
+        @Html.Partial("_LoginComprador", Model)
+    </div>
+</div>
+
+@section ScriptsValidation{
+    @Scripts.Render("~/jqueryval")
+    @Scripts.Render("~/Cadastro")
+}

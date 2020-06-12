@@ -1,0 +1,58 @@
+﻿@model IEnumerable<AssinaturaViewModel>
+<div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12">
+        <table class="table table-bordered tbl-cart">
+            <thead>
+                <tr>
+                    <td class="text-center hidden-xs">Código</td>
+                    <td class="text-center hidden-xs">Tipo Assinatura</td>
+                    <td class="text-center hidden-xs">Data Inicial</td>
+                    <td class="text-center hidden-xs">Data Final</td>
+                    <td class="text-center hidden-xs">Valor</td>
+                    <td class="text-center hidden-xs">Status</td>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model == null || Model.Count() == 0)
+                {
+                    <tr><td colspan="6" class="text-center">Sem Assinaturas.</td></tr>
+                }
+                else
+                {
+                    foreach (AssinaturaViewModel aviso in Model)
+                    {
+                    <tr>
+                        <td class="hidden-xs text-right">
+                            @aviso.Id
+                        </td>
+                        <td class="text-center">
+                            @aviso.MensalidadeName
+                        </td>
+                        <td class="text-center">
+                            @aviso.DataCadastro
+                        </td>
+                        <td class="text-center">
+                            @aviso.DataFinal
+                        </td>
+                        <td class="text-right">
+                            @aviso.Valor
+                        </td>
+                        <td class="text-center">
+                                                  
+                                @if(aviso.Status == "3")
+                                {
+                                    <text>Pagamento Aprovado</text>
+                                }
+                                else
+                                {
+                                    <text>Pagamento em Análise</text>
+                                }
+                            
+                        </td>
+                    </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

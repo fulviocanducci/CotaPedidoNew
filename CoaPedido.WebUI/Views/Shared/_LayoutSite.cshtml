@@ -1,0 +1,33 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Cota Pedido">
+  <meta name="author" content="Sergio Pedro">
+  <title>Cota Pedido - @ViewBag.Title</title>
+  <link rel="shortcut icon" href="~/Content/images/ico/favicon.ico">
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="~/Content/images/ico/apple-touch-icon-144-precomposed.png">
+  <link rel="apple-touch-icon-precomposed" sizes="114x114" href="~/Content/images/ico/apple-touch-icon-114-precomposed.png">
+  <link rel="apple-touch-icon-precomposed" sizes="72x72" href="~/Content/images/ico/apple-touch-icon-72-precomposed.png">
+  <link rel="apple-touch-icon-precomposed" href="~/Content/images/ico/apple-touch-icon-57-precomposed.png">
+  @Styles.Render("~/Content/css-new")        
+</head>
+<body>
+  <nav class="conteudo nav-menu flex">    
+    @Html.Partial("_LayoutSiteMenu")
+  </nav>
+  <div class="conteudo nav-menu-mobile">
+    @Html.Partial("_LayoutSiteMenuMobile")
+  </div>
+  @RenderSection("HomeTop", required: false)
+  <main>
+    @RenderBody()
+  </main>
+  <footer>
+    @Html.Partial("_LayoutSiteFooter")
+  </footer>
+  @Scripts.Render("~/Scripts/js-new")
+  @RenderSection("Scripts", required: false) 
+</body>
+</html>

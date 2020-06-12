@@ -1,0 +1,209 @@
+﻿@model VendedorModel
+
+@Html.AntiForgeryToken()
+@Html.HiddenFor(m => m.CadastroVendedorModel.Id)
+<div class="row">
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <label for="first_name">Primeiro Nome (*)</label>
+        @Html.TextBoxFor(m => m.CadastroVendedorModel.PrimeiroNome, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.CadastroVendedorModel.PrimeiroNome)
+        <br clear="all" />
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <label for="last_name">Nome Completo (*)</label>
+        @Html.TextBoxFor(m => m.CadastroVendedorModel.NomeCompleto, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.CadastroVendedorModel.NomeCompleto)
+        <br clear="all" />
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+        <label for="password">Senha (*)</label>
+        @Html.PasswordFor(m => m.CadastroVendedorModel.Senha, new { @class = "form-control", autocomplete = "off"  })
+        @Html.ValidationMessageFor(m => m.CadastroVendedorModel.Senha)
+        <br clear="all" />
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+        <label for="confirm_password">Repita a Senha (*)</label>
+        @Html.PasswordFor(m => m.CadastroVendedorModel.RepitaSenha, new { @class = "form-control", autocomplete = "off"  })
+        @Html.ValidationMessageFor(m => m.CadastroVendedorModel.RepitaSenha)
+        <br clear="all" />
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+        <label for="">UF (*)</label>
+        @Html.EnumDropDownListFor(x => x.CadastroVendedorModel.UF, "Selecione a UF", 
+          new { @class = "form-control", id = "inputUF" })
+        @Html.ValidationMessageFor(m => m.CadastroVendedorModel.UF)
+        <br clear="all" />
+    </div>
+    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
+        <label for="cidade">Cidade (*)</label>        
+        @Html.DropDownListFor(x => x.CadastroVendedorModel.IdCidade, 
+          ViewBag.Cidades != null ? (SelectList)ViewBag.Cidades : new SelectList(new object[0]),
+          "Selecione a Cidade", new { @class = "form-control", id = "IdCidade" })
+        @Html.ValidationMessageFor(m => m.CadastroVendedorModel.IdCidade)
+        <br clear="all" />
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <label for="first_name">Endereço (*)</label>
+        @Html.TextBoxFor(m => m.CadastroVendedorModel.Endereco, new { @class = "form-control", id = "inputEndereco" })
+        @Html.ValidationMessageFor(m => m.CadastroVendedorModel.Endereco)
+        <br clear="all" />
+    </div>
+    <div class="col-lg-2 col-md-3 col-sm-12 col-xs-12">
+        <label for="last_name">Número (*)</label>
+        @Html.TextBoxFor(m => m.CadastroVendedorModel.Numero, new { @class = "form-control", id = "inputNumero" })
+        @Html.ValidationMessageFor(m => m.CadastroVendedorModel.Numero)
+        <br clear="all" />
+    </div>
+    <div class="col-lg-4 col-md-3 col-sm-12 col-xs-12">
+        <label for="last_name">Complemento</label>
+        @Html.TextBoxFor(m => m.CadastroVendedorModel.Complemento, new { @class = "form-control", id = "inputComplemento" })
+        @Html.ValidationMessageFor(m => m.CadastroVendedorModel.Complemento)
+        <br clear="all" />
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <label for="last_name">Bairro (*)</label>
+        @Html.TextBoxFor(m => m.CadastroVendedorModel.Bairro, new { @class = "form-control", id = "inputBairro" })
+        @Html.ValidationMessageFor(m => m.CadastroVendedorModel.Bairro)
+        <br clear="all" />
+    </div>
+    <div class="col-lg-2 col-md-2 col-sm-3 col-xs-3">
+        <label for="last_name">CEP (*)</label>
+        @Html.TextBoxFor(m => m.CadastroVendedorModel.CEP, new { @class = "form-control", id = "inputCEP" })
+        @Html.ValidationMessageFor(m => m.CadastroVendedorModel.CEP)
+        <br clear="all" />
+    </div>
+    <div class="col-lg-4 col-md-4 col-sm96 col-xs-9">
+        <label for="email">Email (*)</label>
+        @Html.TextBoxFor(m => m.CadastroVendedorModel.Email, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.CadastroVendedorModel.Email)
+        <br clear="all" />
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <label for="last_name">RG</label>
+        @Html.TextBoxFor(m => m.CadastroVendedorModel.RG, new { @class = "form-control", id = "inputRG" })
+        @Html.ValidationMessageFor(m => m.CadastroVendedorModel.RG)
+        <br clear="all" />
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+        <label for="email">CPF/CNPJ (*)</label>
+        @Html.TextBoxFor(m => m.CadastroVendedorModel.CNPJ, new { @class = "form-control", id = "inputCNPJ" })
+        @Html.ValidationMessageFor(m => m.CadastroVendedorModel.CNPJ)
+        <br clear="all" />
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+        <label for="telefone">Telefone</label>
+        @Html.TextBoxFor(m => m.CadastroVendedorModel.Telefone, new { @class = "form-control", id = "inputTelefone" })
+        @Html.ValidationMessageFor(m => m.CadastroVendedorModel.Telefone)
+        <br clear="all" />
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+        <label for="celular">Celular (*)</label>
+        @Html.TextBoxFor(m => m.CadastroVendedorModel.Celular, new { @class = "form-control", id = "inputCelular" })
+        @Html.ValidationMessageFor(m => m.CadastroVendedorModel.Celular)
+        <br clear="all" />
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-3 col-md-6 col-sm-6">
+        <label>Inscrição Municipal</label>
+        @Html.TextBoxFor(x => x.CadastroVendedorModel.IM, new { @class = "form-control" })
+        <br clear="all" />
+    </div>
+    <div class="col-lg-3 col-md-6 col-sm-12">
+        <label>Inscrição Estadual</label>
+        @Html.TextBoxFor(x => x.CadastroVendedorModel.IE, new { @class = "form-control" })
+        <br clear="all" />
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+        <label>Site</label>
+        @Html.TextBoxFor(x => x.CadastroVendedorModel.Site, new { @class = "form-control" })
+        @Html.ValidationMessageFor(x => x.CadastroVendedorModel.Site)
+    </div>
+</div>
+<br />
+<span class="title">DADOS PARA COBRANÇA</span>
+<div class="checkbox">
+    <label>
+        <input type="checkbox" id="btnCobranca"> Mesmos dados informados acima
+    </label>
+</div>
+<div class="row">
+    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+        <label for="">UF (*)</label>
+        @Html.EnumDropDownListFor(x => x.CadastroVendedorModel.UFCobranca, "Selecione a UF", 
+          new { @class = "form-control", id = "inputUF2" })
+        @Html.ValidationMessageFor(m => m.CadastroVendedorModel.UFCobranca)
+        <br clear="all" />
+    </div>
+    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
+        <label for="cidade">Cidade (*)</label>        
+        @Html.DropDownListFor(x => x.CadastroVendedorModel.IdCidadeCobranca, 
+          ViewBag.CidadesCobranca != null ? (SelectList)ViewBag.CidadesCobranca : new SelectList(new object[0]), 
+          "Selecione a Cidade", new { @class = "form-control", id = "IdCidadeCobranca" })
+        @Html.ValidationMessageFor(m => m.CadastroVendedorModel.IdCidadeCobranca)
+        <br clear="all" />
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <label for="first_name">Endereço (*)</label>
+        @Html.TextBoxFor(m => m.CadastroVendedorModel.EnderecoCobranca, new { @class = "form-control", id = "inputEndereco2" })
+        @Html.ValidationMessageFor(m => m.CadastroVendedorModel.EnderecoCobranca)
+        <br clear="all" />
+    </div>
+    <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+        <label for="last_name">Número (*)</label>
+        @Html.TextBoxFor(m => m.CadastroVendedorModel.NumeroCobranca, new { @class = "form-control", id = "inputNumero2" })
+        @Html.ValidationMessageFor(m => m.CadastroVendedorModel.NumeroCobranca)
+        <br clear="all" />
+    </div>
+    <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+        <label for="last_name">Complemento</label>
+        @Html.TextBoxFor(m => m.CadastroVendedorModel.ComplementoCobranca, new { @class = "form-control", id = "inputComplemento2" })
+        @Html.ValidationMessageFor(m => m.CadastroVendedorModel.ComplementoCobranca)
+        <br clear="all" />
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <label for="last_name">Bairro (*)</label>
+        @Html.TextBoxFor(m => m.CadastroVendedorModel.BairroCobranca, new { @class = "form-control", id = "inputBairro2" })
+        @Html.ValidationMessageFor(m => m.CadastroVendedorModel.BairroCobranca)
+        <br clear="all" />
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <label for="last_name">CEP (*)</label>
+        @Html.TextBoxFor(m => m.CadastroVendedorModel.CEPCobranca, new { @class = "form-control", id = "inputCEP2" })
+        @Html.ValidationMessageFor(m => m.CadastroVendedorModel.CEPCobranca)
+        <br clear="all" />
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+        <label for="telefone">Telefone</label>
+        @Html.TextBoxFor(m => m.CadastroVendedorModel.TelefoneCobranca, new { @class = "form-control", id = "inputTelefone2" })
+        @Html.ValidationMessageFor(m => m.CadastroVendedorModel.TelefoneCobranca)
+        <br clear="all" />
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+        <label for="celular">Celular (*)</label>
+        @Html.TextBoxFor(m => m.CadastroVendedorModel.CelularCobranca, new { @class = "form-control", id = "inputCelular2" })
+        @Html.ValidationMessageFor(m => m.CadastroVendedorModel.CelularCobranca)
+        <br clear="all" />
+    </div>
+</div>
+<button class="btn btn-danger" type="submit">Registrar</button>
+<!-- End Form Register -->

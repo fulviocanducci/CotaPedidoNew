@@ -1,0 +1,230 @@
+﻿@model CadastroCompradorModel
+
+@{
+    ViewBag.Title = "Dados do Comprador";
+    var cadastrado = ViewBag.Success != null ? Convert.ToBoolean(ViewBag.Success) : false;
+}
+
+<div class="container">
+    <div class="col-lg-12 col-md-12 col-sm-12">
+        <div class="white-container">
+            <span class="title">DADOS CADASTRAIS</span>
+
+            @if (!ViewData.ModelState.IsValid && Model != null)
+            {
+                <div class="row">
+                    <div class="col-md-12 col-lg-12 col-sm-12">
+                        <div class="alert alert-dismissable alert-danger">
+                            <button type="button" class="close" data-dismiss="alert">×</button>
+                            @Html.ValidationSummary()
+                        </div>
+                    </div>
+                </div>
+            }
+            @if (cadastrado)
+            {
+                <div class="row">
+                    <div class="col-md-12 col-lg-12 col-sm-12">
+                        <div class="alert alert-dismissable alert-success">
+                            <button type="button" class="close" data-dismiss="alert">×</button>
+                            <ul><li>Comprador atualizado com sucesso!</li></ul>
+                        </div>
+                    </div>
+                </div>
+            }
+            @using (Html.BeginForm("DadosComprador", "Cadastro", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(x => x.Email)
+                @Html.HiddenFor(x => x.CNPJ)
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                        <label for="first_name">Primeiro Nome (*)</label>
+                        @Html.TextBoxFor(m => m.PrimeiroNome, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.PrimeiroNome)
+                        <br clear="all" />
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                        <label for="last_name">Nome Completo (*)</label>
+                        @Html.TextBoxFor(m => m.NomeCompleto, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.NomeCompleto)
+                        <br clear="all" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <label for="password">Senha (*)</label>
+                        @Html.PasswordFor(m => m.Senha, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Senha)
+                        <br clear="all" />
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <label for="confirm_password">Repita a Senha (*)</label>
+                        @Html.PasswordFor(m => m.RepitaSenha, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.RepitaSenha)
+                        <br clear="all" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                        <label for="">UF (*)</label>
+                        @Html.EnumDropDownListFor(x => x.UF, "Selecione a UF", new { @class = "form-control", id = "inputUF" })
+                        @Html.ValidationMessageFor(m => m.UF)
+                        <br clear="all" />
+                    </div>
+                    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
+                        <label for="cidade">Cidade (*)</label>
+                        @{var selectCidades = CompradorModel.SelectCidades().Select(x => new SelectListItem { Text = x.Nome, Value = x.Id.ToString() + "\" data-uf=\"" + x.UF });}
+                        @Html.DropDownListFor(x => x.IdCidade, selectCidades, "Selecione a Cidade", new { @class = "form-control", id = "inputCidades" })
+                        @Html.ValidationMessageFor(m => m.IdCidade)
+                        <br clear="all" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                        <label for="first_name">Endereço (*)</label>
+                        @Html.TextBoxFor(m => m.Endereco, new { @class = "form-control", id = "inputEndereco" })
+                        @Html.ValidationMessageFor(m => m.Endereco)
+                        <br clear="all" />
+                    </div>
+                    <div class="col-lg-2 col-md-3 col-sm-12 col-xs-12">
+                        <label for="last_name">Número (*)</label>
+                        @Html.TextBoxFor(m => m.Numero, new { @class = "form-control", id = "inputNumero" })
+                        @Html.ValidationMessageFor(m => m.Numero)
+                        <br clear="all" />
+                    </div>
+                    <div class="col-lg-2 col-md-3 col-sm-12 col-xs-12">
+                        <label for="last_name">Complemento</label>
+                        @Html.TextBoxFor(m => m.Complemento, new { @class = "form-control", id = "inputComplemento" })
+                        @Html.ValidationMessageFor(m => m.Complemento)
+                        <br clear="all" />
+                    </div>
+                    <div class="col-lg-2 col-md-6 col-sm-12 col-xs-12">
+                        <label for="last_name">Bairro (*)</label>
+                        @Html.TextBoxFor(m => m.Bairro, new { @class = "form-control", id = "inputBairro" })
+                        @Html.ValidationMessageFor(m => m.Bairro)
+                        <br clear="all" />
+                    </div>
+                </div>
+                <div class="row">
+
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                        <label for="last_name">CEP (*)</label>
+                        @Html.TextBoxFor(m => m.CEP, new { @class = "form-control", id = "inputCEP" })
+                        @Html.ValidationMessageFor(m => m.CEP)
+                        <br clear="all" />
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            <label>Site</label>
+                            @Html.TextBoxFor(x => x.Site, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(x => x.Site)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <label for="inputTelefone">Telefone</label>
+                        @Html.TextBoxFor(m => m.Telefone, new { @class = "form-control", id = "inputTelefone" })
+                        @Html.ValidationMessageFor(m => m.Telefone)
+                        <br clear="all" />
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <label for="inputCelular">Celular (*)</label>
+                        @Html.TextBoxFor(m => m.Celular, new { @class = "form-control", id = "inputCelular" })
+                        @Html.ValidationMessageFor(m => m.Celular)
+                        <br clear="all" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <label>Inscrição Municipal</label>
+                        @Html.TextBoxFor(x => x.IM, new { @class = "form-control" })
+                        <br clear="all" />
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-12">
+                        <label>Inscrição Estadual</label>
+                        @Html.TextBoxFor(x => x.IE, new { @class = "form-control" })
+                        <br clear="all" />
+                    </div>
+                </div>
+                <br />
+                <span class="title">DADOS PARA COBRANÇA</span>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" id="btnCobranca"> Mesmos dados informados acima
+                    </label>
+                </div>
+                <div class="row">
+                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                        <label for="">UF (*)</label>
+                        @Html.EnumDropDownListFor(x => x.UFCobranca, "Selecione a UF", new { @class = "form-control", id = "inputUF2" })
+                        @Html.ValidationMessageFor(m => m.UFCobranca)
+                        <br clear="all" />
+                    </div>
+                    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
+                        <label for="cidade">Cidade (*)</label>
+                        @Html.DropDownListFor(x => x.IdCidadeCobranca, selectCidades, "Selecione a Cidade", new { @class = "form-control", id = "inputCidades2" })
+                        @Html.ValidationMessageFor(m => m.IdCidadeCobranca)
+                        <br clear="all" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                        <label for="first_name">Endereço (*)</label>
+                        @Html.TextBoxFor(m => m.EnderecoCobranca, new { @class = "form-control", id = "inputEndereco2" })
+                        @Html.ValidationMessageFor(m => m.EnderecoCobranca)
+                        <br clear="all" />
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                        <label for="last_name">Número (*)</label>
+                        @Html.TextBoxFor(m => m.NumeroCobranca, new { @class = "form-control", id = "inputNumero2" })
+                        @Html.ValidationMessageFor(m => m.NumeroCobranca)
+                        <br clear="all" />
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                        <label for="last_name">Complemento</label>
+                        @Html.TextBoxFor(m => m.ComplementoCobranca, new { @class = "form-control", id = "inputComplemento2" })
+                        @Html.ValidationMessageFor(m => m.ComplementoCobranca)
+                        <br clear="all" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                        <label for="last_name">Bairro (*)</label>
+                        @Html.TextBoxFor(m => m.BairroCobranca, new { @class = "form-control", id = "inputBairro2" })
+                        @Html.ValidationMessageFor(m => m.BairroCobranca)
+                        <br clear="all" />
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                        <label for="last_name">CEP (*)</label>
+                        @Html.TextBoxFor(m => m.CEPCobranca, new { @class = "form-control", id = "inputCEP2" })
+                        @Html.ValidationMessageFor(m => m.CEPCobranca)
+                        <br clear="all" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <label for="telefone">Telefone</label>
+                        @Html.TextBoxFor(m => m.Telefone, new { @class = "form-control", id = "inputTelefone2" })
+                        @Html.ValidationMessageFor(m => m.TelefoneCobranca)
+                        <br clear="all" />
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <label for="celular">Celular (*)</label>
+                        @Html.TextBoxFor(m => m.CelularCobranca, new { @class = "form-control", id = "inputCelular2" })
+                        @Html.ValidationMessageFor(m => m.CelularCobranca)
+                        <br clear="all" />
+                    </div>
+                </div>
+                <button class="btn btn-danger" type="submit">Salvar</button>
+            }
+        </div>
+    </div>
+</div>
+@section ScriptsValidation{
+    @Scripts.Render("~/jqueryval")
+    @Scripts.Render("~/Cadastro")
+}

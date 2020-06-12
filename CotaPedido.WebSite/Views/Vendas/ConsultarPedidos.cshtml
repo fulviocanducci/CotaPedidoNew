@@ -1,0 +1,117 @@
+﻿@model CotacaoModel
+@{
+    ViewBag.Title = "Consultar";
+}
+@{
+    var cadastrado = TempData["Success"] != null ? Convert.ToBoolean(TempData["Success"]) : false;
+}
+
+<div class="container">
+    <div class="col-lg-12 col-md-12 col-sm-12">
+        <div class="white-container">
+            <span class="title">PESQUISAR PEDIDOS</span>
+
+            <div class="row">
+                @using (Html.BeginForm("Consultar", "Vendas", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken();
+                    <div class="col-lg-12 col-sm-12 hero-feature">
+
+                        @if (cadastrado)
+                        {
+                            <div class="row">
+                                <div class="col-md-12 col-lg-12 col-sm-12">
+                                    <div class="alert alert-dismissable alert-success">
+                                        <button type="button" class="close" data-dismiss="alert">×</button>
+                                        <ul><li>Vendedor cadastrado com sucesso!</li></ul>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
+                        @if (!ViewData.ModelState.IsValid)
+                        {
+                            <div class="row">
+                                <div class="col-md-12 col-lg-12 col-sm-12">
+                                    <div class="alert alert-dismissable alert-danger">
+                                        <button type="button" class="close" data-dismiss="alert">×</button>
+                                        @Html.ValidationSummary()
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                <table class="table table-bordered tbl-checkout">
+                                    <tbody>
+                                        <tr>
+                                            <td class="content-middle" style="width: 150px;">Categoria Principal</td>
+                                            <td colspan="3">
+                                                Descrição Categoria Principal
+                                            </td>
+                                            <td style="width: 120px; text-align: right;">
+                                                <div class="btn-group btns-cart">
+                                                    <button type="submit" class="btn btn-primary" id="btnIniciar">Pesquisar</button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                <table class="table table-bordered tbl-cart">
+                                    <thead>
+                                        <tr>
+                                            <td class="hidden-xs">Data Pedido</td>
+                                            <td>Data Limite Propostas</td>
+                                            <td>Categoria Principal</td>
+                                            <td>Situação</td>
+                                            <td></td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if (Model.Pedidos.Count == 0)
+                                        {
+                                        <tr><td colspan="5">Sem pedidos para listar.</td></tr>
+                                        }
+                                        else
+                                        {
+                                            foreach (var pedido in Model.Pedidos)
+                                            {
+                                        <tr>
+                                            <td class="hidden-xs">
+                                                @pedido.DataCadastro.Value.ToString("dd/MM/yyyy")
+                                            </td>
+                                            <td>
+                                                @pedido.Validade.Value.ToString("dd/MM/yyyy")
+                                            </td>
+                                            <td>
+                                                @pedido.Categoria.Nome
+                                            </td>
+                                            <td>
+                                                @pedido.SituacaoPedido.ToString()
+                                            </td>
+                                            <td style="text-align: center; color:black !important;">
+                                                @Html.ActionLink(" ", "DetalhesPedido", "Vendas", new { Id = pedido.Id }, new { @class = "fa fa-search" })
+                                            </td>
+                                        </tr>
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+@section ScriptsValidation{
+    @Scripts.Render("~/jqueryval")
+    @Scripts.Render("~/SolicitarPedido")
+}
+
+

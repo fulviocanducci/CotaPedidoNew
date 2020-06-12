@@ -1,0 +1,16 @@
+﻿@model Int32
+@using (Html.BeginForm("ImportarItens", "Compras", FormMethod.Post, new { enctype = "multipart/form-data", id = "frmImportarItensPedidosComprador" })){
+    <div class="col-lg-12 col-md-12 col-sm-12">
+        <table class="table table-bordered tbl-checkout">
+            @Html.Hidden("Id", Model)
+            <tbody>
+                <tr>
+                    <td>
+                        <input name="arquivo" type="file" id="arquivo" />
+                        <input type="submit" class="btn btn-primary" id="btnImportar0" value="Importar" />
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+}

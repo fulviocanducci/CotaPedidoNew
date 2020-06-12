@@ -1,0 +1,210 @@
+﻿@model CotacaoModel
+
+@{
+    ViewBag.Title = "Editar Cotação";
+}
+
+<div class="container">
+    <div class="col-lg-12 col-md-12 col-sm-12">
+        <div class="white-container">
+            @if (ViewBag.Status != null)
+            {
+                <div class="row">
+                    <div class="col-md-12 col-lg-12 col-sm-12">
+                        <div class="alert alert-dismissable alert-success">
+                            <button type="button" class="close" data-dismiss="alert">×</button>
+                            <ul><li>@ViewBag.Status</li></ul>
+                        </div>
+                    </div>
+                </div>
+            }
+            <div class="row">
+                <div class="col-lg-12 col-sm-12 hero-feature">
+                    <h4 class="title">EDITAR COTAÇÃO</h4>
+                </div>
+            </div>
+            @using (Html.BeginForm("EditarCotacao", "Vendas", FormMethod.Post, new { enctype = "multipart/form-data", id = "formCotacao" }))
+            {
+            <div class="row">
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(x => x.Id)
+                @Html.HiddenFor(x => x.IdPedido)
+                @Html.HiddenFor(x => x.DataCotacao)
+                @Html.HiddenFor(x => x.IdVendedor)
+                @Html.HiddenFor(x => x.IdCotacao)
+
+                <div class="col-lg-12 col-sm-12 hero-feature">
+                    @if (!ViewData.ModelState.IsValid)
+                    {
+                        <div class="row">
+                            <div class="col-md-12 col-lg-12 col-sm-12">
+                                <div class="alert alert-dismissable alert-danger">
+                                    <button type="button" class="close" data-dismiss="alert">×</button>
+                                    @Html.ValidationSummary()
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                    <table class="table table-bordered tbl-checkout">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <span><b>Código do Pedido</b></span><br />
+                                    @Model.Pedido.Id
+                                </td>
+                                <td>
+                                    <span><b>Data do Pedido</b></span><br />
+                                    @Model.Pedido.DataCadastro.Value.ToString("dd/MM/yyyy")
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span><b>Categoria Principal</b></span><br />
+                                    @Model.Pedido.Categoria.Nome
+                                </td>
+                                <td>
+                                    <span><b>Data Limite para Propostas</b></span><br />
+                                    @Model.Pedido.Validade.Value.ToString("dd/MM/yyyy")
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <table id="produtos" class="table table-bordered tbl-cart">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Produto</th>
+                                @*<th class="tdItens">Categoria</th>*@
+                                <th class="tdItens">Subcategoria</th>
+                                <th class="tdItens">Un. Medida</th>
+                                <th class="td-qty tdItens">Quantidade</th>
+                                <th>Valor Unitário</th>
+                                <th class="tdItens">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.Itens.Count == 0)
+                            {
+                                <tr><td colspan="5">Sem itens para listar.</td></tr>
+                            }
+                            else
+                            {
+                                for (var i = 0; i < Model.Itens.Count; i++)
+                                {
+                                    var pos = i + 1;
+                                    <tr>
+                                        <td>
+                                            @Html.DisplayFor(x => pos)
+                                            @Html.HiddenFor(x => x.Itens[i].IdItem)
+                                            @Html.HiddenFor(x => x.Itens[i].Id)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(x => x.Itens[i].NomeProduto)
+                                            @Html.HiddenFor(x => x.Itens[i].NomeProduto)
+                                        </td>
+                                        @*<td class="tdItens">
+                                    @Html.DisplayFor(x => x.Itens[i].Categoria.Nome)
+                                    @Html.HiddenFor(x => x.Itens[i].IdCategoria)
+                                </td>*@
+                                        <td class="tdItens">
+                                            @Html.DisplayFor(x => x.Itens[i].SubCategoria.Nome)
+                                            @Html.HiddenFor(x => x.Itens[i].IdSubCategoria)
+                                        </td>
+                                        <td class="tdItens">
+                                            @Html.DisplayFor(x => x.Itens[i].Unidade.Descricao)
+                                            @Html.HiddenFor(x => x.Itens[i].Unidade.Descricao)
+                                        </td>
+                                        <td class="tdItens">
+                                            @Html.DisplayFor(x => x.Itens[i].Quantidade)
+                                            @Html.HiddenFor(x => x.Itens[i].Quantidade)
+                                        </td>
+                                        <td class="valorUnitario">
+                                            @Html.TextBoxFor(x => x.Itens[i].ValorUnitario, new { @class = "form-control text-right itemValorUnitario" })
+                                        </td>
+                                        <td class="tdItens">
+                                            @Html.TextBoxFor(x => x.Itens[i].ValorTotal, new { @class = "form-control text-right itemValorTotal", @readonly = "readonly" })
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            <tr>
+                                <td colspan="7" class="text-center">
+                                    <div class="btn-group btns-cart">
+                                        <button type="submit" class="btn btn-primary">Finalizar</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+            }
+            @using (Html.BeginForm("ImportarItens", "Vendas", FormMethod.Post, new { enctype = "multipart/form-data", id = "formImportarItens" }))
+            {
+
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <table class="table table-bordered tbl-checkout">
+                            <tbody>
+                                <tr>
+                                    <td colspan="6">
+                                        <span>Observações</span><br />
+                                        @Model.Pedido.Observacao
+                                    </td>
+                                </tr>
+                                <tr id="trBotoes">
+                                    <td colspan="8">
+                                        @Html.HiddenFor(x => x.IdCotacao)
+                                        <input type="file" name="arquivo" id="arquivo" placeholder="Escolha planilha do excel" required/>
+                                        <div class="btn-group btns-cart">
+                                            <input type="button" class="btn btn-primary" id="btnExportar" value="Exportar Itens" />
+                                        </div>
+                                        <div class="btn-group btns-cart">
+                                            <input type="submit" class="btn btn-primary" id="btnImportar" value="Importar Itens" />
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div id="modalAlert" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Alerta!</h4>
+            </div>
+            <div class="modal-body" id="modalAlertBody">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Ok</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        var id = $("#Id").val();
+        $(document).ready(function(){
+            $("#btnExportar").click(function () {
+                window.open("/Vendas/ExportarItens/" + id, "_blank");
+            });
+        });
+    </script>
+    @*@Scripts.Render("~/Cotar")
+    @Scripts.Render("~/ExportJs")*@
+}
+
+
+

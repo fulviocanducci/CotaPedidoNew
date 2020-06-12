@@ -1,0 +1,147 @@
+﻿@model CotacaoModel
+@{
+  ViewBag.Title = "Página Inicial";
+  Layout = "~/Views/Shared/_LayoutSite.cshtml";
+  var subCategorias = Model.ObterSubCategorias();
+}
+@section HomeTop {
+  <header>
+    <div class="header-slider">
+      <img src="/imagens/vinhetas/Banner1.jpg" alt="">
+      <img src="/imagens/vinhetas/Banner1.jpg" alt="">
+      <img src="/imagens/vinhetas/Banner1.jpg" alt="">
+    </div>
+  </header>
+}
+<section class="barra">
+  <div class="conteudo barra-pesquisa flex">
+    <h3>O que procura?</h3>
+    <form method="get" action="@Url.RouteUrl("RouteListaCategoriaSubCategoriaItensDescricao")" class="flex">
+      <input type="text"
+             id="descricao"
+             name="descricao"
+             class="busca"
+             maxlength="30" value="@ViewBag.Descricao"
+             required pattern="^[A-Za-z0-9_]{3,30}$"
+             placeholder="Busque aqui">
+      <button type="submit">
+        <i class="fa fa-search"></i>
+      </button>
+    </form>
+  </div>
+</section>
+
+<section class="conteudo">
+  <div class="categorias">
+    <h2>Categorias </h2>
+    <ul>
+      @foreach (var categoria in Model.Categorias)
+      {
+        <li class="flex">
+          <span class="categoria">@categoria.Nome</span> <i class="fas fa-angle-right"></i>
+          <ul>
+            @foreach (var subCategoria in subCategorias.Where(s => s.IdGrupo == categoria.Id))
+            {
+              <li class="sub-categoria">
+                @Html.RouteLink(
+                  subCategoria.Nome,
+                  "RouteListaCategoriaSubCategoria",
+                  new { idCategoria = categoria.UrlAmigavel, idSubCategoria = subCategoria.UrlAmigavel }
+                )
+              </li>
+            }
+          </ul>
+        </li>
+      }
+    </ul>
+  </div>
+
+  <div class="cotacoes flex">
+    <h2>Novas cotações</h2>
+    @foreach (var pedido in Model.Pedidos)
+    {
+      var imagem = Model.Categorias.Where(c => c.Id == pedido.IdCategoriaPrincipal).Select(c => c.Imagem).First();
+      var nameLinkRoute = pedido.Itens != null && pedido.Itens.Count > 0 ? pedido.Itens.First().Descricao.FriendlyURL() : "sem-decricao";
+      <a href="@Url.RouteUrl("VendasDetalhesPedido", new { name = nameLinkRoute, id = pedido.Id })" class="link-produto ">
+        <div class="produto hvr-radial-out">
+          <h4 class="quantidade"><strong>@pedido.Itens.Count()</strong> un.</h4>
+          <img src="@imagem" alt="">
+          <p>
+            <span class="nome-produto">
+              @if (pedido.Itens.Count() > 0)
+              {
+                if (pedido.Itens.First().Descricao.Length > 42)
+                {
+                  @pedido.Itens.First().Descricao.Substring(0, 42)
+                }
+                else
+                {
+                  @pedido.Itens.First().Descricao
+                }
+              }
+              else
+              {
+                @Html.Raw("Sem descrição")
+              }
+            </span>
+            <br>
+            <span class="atributos">
+              Validade:
+              @if (pedido.Validade.HasValue)
+              {
+                @pedido.Validade.Value.ToString("dd/MM/yyyy")
+              }
+              else
+              {
+                @Html.Raw("sem validade.")
+              }
+            </span>
+          </p>
+        </div>
+      </a>
+    }
+  </div>
+
+</section>
+
+<section class="banner">
+  <img src="/imagens/vinhetas/banner-passo-a-passo-mb.png" alt="">
+</section>
+
+<section class="conteudo funcionamento flex">
+  <h2>Como funciona?</h2>
+
+  <div class="passos">
+    <img src="/imagens/vinhetas/ilustração-1.jpg" alt="">
+    <h3>Faça seu pedido</h3>
+    <p>Especifique o produto que deseja e sua quantidade</p>
+  </div>
+
+  <i class="fas fa-chevron-right"></i>
+
+  <div class="passos">
+    <img src="/imagens/vinhetas/ilustração-2.jpg" alt="">
+    <h3>Veja os orçamentos</h3>
+    <p>Você receberá diferentes orçamentos das empresas que fornencem seu produto</p>
+  </div>
+
+  <i class="fas fa-chevron-right"></i>
+
+  <div class="passos">
+    <img src="/imagens/vinhetas/ilustração-3.jpg" alt="">
+    <h3>Otimize!</h3>
+    <p>Escolha o pedido que mais te agrada e otimize seu tempo!</p>
+  </div>
+</section>
+@section Scripts {
+  <script>
+    $(document).ready(function () {
+      $('.header-slider').slick({
+        infinite: true,
+        dots: true,
+        arrows: true,
+
+      });
+    });
+  </script>
+}

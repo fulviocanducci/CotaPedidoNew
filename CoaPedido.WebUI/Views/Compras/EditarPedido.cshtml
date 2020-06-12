@@ -1,0 +1,205 @@
+﻿@model PedidoModel
+@{
+    ViewBag.Title = "Editar Pedido";
+}
+
+<div class="container">
+    <div class="col-lg-12 col-md-12 col-sm-12">
+        <div class="white-container">
+            <span class="title">EDITAR PEDIDO</span>
+            @if (ViewBag.Status != null)
+            {
+                <div class="row">
+                    <div class="col-md-12 col-lg-12 col-sm-12">
+                        <div class="alert alert-dismissable alert-success">
+                            <button type="button" class="close" data-dismiss="alert">×</button>
+                            <ul><li>@ViewBag.Status</li></ul>
+                        </div>
+                    </div>
+                </div>
+            }
+            <div class="row">
+                @using (Html.BeginForm(Model.SituacaoPedido != SituacaoPedido.Pendente ? "" : "EditarPedido", "Compras", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken();
+                    @Html.HiddenFor(x => x.Id, new { @id = "inputId" })
+                    @Html.HiddenFor(x => x.DataLimiteProposta)
+                    @Html.HiddenFor(x => x.DataPedido)
+                    @Html.HiddenFor(x => x.IdComprador)
+                    @Html.HiddenFor(x => x.IdCategoriaPrincipal)
+                    <div class="col-lg-12 col-sm-12 hero-feature">
+                        @if (!ViewData.ModelState.IsValid)
+                        {
+                            <div class="row">
+                                <div class="col-md-12 col-lg-12 col-sm-12">
+                                    <div class="alert alert-dismissable alert-danger">
+                                        <button type="button" class="close" data-dismiss="alert">×</button>
+                                        @Html.ValidationSummary()
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                <table class="table table-bordered tbl-checkout">
+                                    <tbody>
+                                        <tr>
+                                            <td width="45%">
+                                                <span>Categoria</span><br />
+                                                @Html.DropDownList("categoria", Model.ObterSelectCategorias(), "Selecione a categoria", new { id = "categoria", @class = "form-control", @disabled = "disabled" })
+                                            </td>
+
+                                            <td width="45%">
+                                                <span>Subcategoria</span><br />
+                                                <select class="form-control" id="subcategoria">
+                                                    <option value="">Selecione a subcategoria</option>
+                                                </select>
+                                            </td>
+                                            <td width="10%" colspan="2">
+                                                <a href="#" id="btnNovaCategoria" class="btn btn-primary" style="color:#FFFFFF;display:inline-block;">Adicionar Subcategoria</a>
+                                            </td>
+
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" width="60%">
+                                                <span>Produto</span><br />
+                                                <input id="produto" type="text" name="" class="form-control" />
+                                            </td>
+                                            <td width="25%">
+                                                <span>Unidade</span><br />
+                                                @Html.DropDownList("unidade", Model.ObterSelectUnidades(), "Selecione a unidade", new { id = "unidade", @class = "form-control" })
+                                            </td>
+                                            <td width="5%">
+                                                <span>Quantidade</span><br />
+                                                <input id="quantidade" type="text" name="" class="form-control" />
+                                            </td>
+                                            <td width="10%">
+                                                <button type="button" class="btn btn-primary" id="btnIncluir">Incluir</button>
+                                            </td>
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                <table id="produtos" class="table table-bordered tbl-cart">
+                                    <thead>
+                                        <tr>
+                                            <td>Produto</td>
+                                            <td>Categoria</td>
+                                            <td>Subcategoria</td>
+                                            <td>Unidade</td>
+                                            <td class="td-qty">Quantidade</td>
+                                            <td>Remover</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @for (var i = 0; i < Model.Itens.Count; i++)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    <input type="hidden" value="@i" class="index" disabled />
+                                                    @Html.HiddenFor(x => x.Itens[i].Excluido)
+                                                    @Html.HiddenFor(x => x.Itens[i].NomeProduto)
+                                                    @Model.Itens[i].NomeProduto
+                                                    @Html.HiddenFor(x => x.Itens[i].Id)
+                                                </td>
+                                                <td>
+                                                    @Html.HiddenFor(x => x.Itens[i].IdCategoria)
+                                                    @if (Model.Itens[i].Categoria != null)
+                                                    {
+                                                        @Model.Itens[i].Categoria.Nome
+                                                    }
+                                                </td>
+                                                <td>
+                                                    @Html.HiddenFor(x => x.Itens[i].IdSubcategoria)
+                                                    @if (Model.Itens[i].SubCategoria != null)
+                                                    {
+                                                        @Model.Itens[i].SubCategoria.Nome
+                                                    }
+                                                </td>
+                                                <td>
+                                                    @Html.HiddenFor(x => x.Itens[i].IdUnidade)
+                                                    @if (Model.Itens[i].IdUnidade != default(int))
+                                                    {
+                                                        @Model.Itens[i].Unidade.Descricao
+                                                    }
+                                                </td>
+                                                <td>
+                                                    @Html.TextBoxFor(x => x.Itens[i].Quantidade, new { @class = "input-qty form-control text-center" })
+                                                </td>
+                                                <td class="text-center content-middle">
+                                                    <a href="#" class="remove_cart" data-index="@i" rel="2">
+                                                        <i class="fa fa-trash-o fa-2x"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                <table class="table table-bordered tbl-checkout">
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="6">
+                                                <span>Observações</span><br />
+                                                @Html.TextAreaFor(x => x.Observacao)
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="6">
+                                                @if (Model.SituacaoPedido == SituacaoPedido.Pendente)
+                                                {
+                                                    <button type="submit" class="btn btn-primary">Continuar</button>
+                                                }
+                                                <input type="button" class="btn btn-primary" id="btnCancelar" value="Cancelar" />
+                                                @if (Model.SituacaoPedido == SituacaoPedido.Pendente)
+                                                {
+                                                    <input type="button" class="btn btn-primary" id="btnPublicar" value="Publicar" />
+                                                }
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                }
+                @if (Model.SituacaoPedido == SituacaoPedido.Pendente)
+                {
+                    @Html.Partial("_Pedido_ImportarItens", Model.Id)
+                }
+            </div>
+            <!-- End Cart -->
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div id="modalAlert" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Alerta!</h4>
+            </div>
+            <div class="modal-body" id="modalAlertBody"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Ok</button>
+            </div>
+        </div>
+    </div>
+</div>
+@Html.Partial("_NovaSubcategoria")
+
+@section Scripts{
+    @Scripts.Render("~/NovaCompra")
+}

@@ -1,0 +1,21 @@
+﻿@{  ViewBag.Title = "Cadastros";  Layout = "~/Views/Shared/_LayoutSite.cshtml"; }
+<div class="flex tipo-cadastro">
+  <div class="cad-comprador">
+    <div class="cad-texto">
+      <h2>Sou comprador</h2>
+      <p>Quero fazer cotações e otimizar minhas compras</p>
+      <a href="@Url.RouteUrl("CadastroCompradorGet")" class="botao">CADASTRE-SE</a>
+    </div>
+    <img src="/imagens/vinhetas/cadastro-comprador.jpg" alt="">
+  </div>
+
+  <div class="cad-vendedor">
+    <div class="cad-texto">
+      <h2>Sou empresário</h2>
+      <p>Quero oferecer meus produtos e vender mais</p>
+      <a href="@Url.RouteUrl("CadastroVendedorGet")" class="botao">CADASTRE-SE</a>
+    </div>
+    <img src="/imagens/vinhetas/cadastro-vendedor.jpg" alt="">
+  </div>
+</div>
+

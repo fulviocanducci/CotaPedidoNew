@@ -1,0 +1,69 @@
+﻿@model CotacaoModel
+@{
+    ViewBag.Title = "Listar Cotações";
+}
+
+<section>
+    <div class="container">
+        <div class="row">
+
+            @Html.Partial("_MenuLateral", Model)
+
+            <div class="col-sm-9 padding-right">
+                <div class="features_items">
+                    <!--features_items-->
+                    <h2 class="title text-center">Cotações</h2>
+                    @foreach (var pedidos in Model.Pedidos)
+                    {
+                        var imagem = Model.Categorias.Where(c => c.Id == pedidos.IdCategoriaPrincipal).Select(c => c.Imagem).First();
+                        <div class="col-sm-4">
+                            <div class="product-image-wrapper">
+                                <div class="single-products">
+                                    <div class="productinfo text-center">
+                                        <img src="@imagem" alt="" />
+                                        @if (pedidos.Itens.Count() > 0)
+                                        {
+                                            <h2>@pedidos.Itens.First().Descricao - @pedidos.Itens.First().Quantidade.Value.ToString("#,##")</h2>
+                                        }
+                                        else
+                                        {
+                                            <h2>Sem descrição</h2>
+                                        }
+                                        <p>Validade: @pedidos.Validade.Value.ToString("dd/MM/yyyy")</p>
+                                        
+                                        <a href="/Vendas/DetalhesPedido/@pedidos.Id" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Visualizar</a>
+                                    </div>
+                                    <div class="product-overlay">
+                                        <div class="overlay-content">
+                                            @if (pedidos.Itens.Count() > 0)
+                                            {
+                                                <h2>@pedidos.Itens.First().Descricao - @pedidos.Itens.First().Quantidade.Value.ToString("#,##")</h2>
+                                            }
+                                            else
+                                            {
+                                                <h2>Sem descrição</h2>
+                                            }
+                                            <p>Validade: @pedidos.Validade.Value.ToString("dd/MM/yyyy")</p>
+                                            <a href="/Vendas/DetalhesPedido/@pedidos.Id" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Visualizar</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                @*<div class="choose">
+                                        <ul class="nav nav-pills nav-justified">
+                                            <li><a href="#"><i class="fa fa-plus-square"></i>Add to wishlist</a></li>
+                                            <li><a href="#"><i class="fa fa-plus-square"></i>Add to compare</a></li>
+                                        </ul>
+                                    </div>*@
+                            </div>
+                        </div>
+                    }
+                </div><!--features_items-->
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+

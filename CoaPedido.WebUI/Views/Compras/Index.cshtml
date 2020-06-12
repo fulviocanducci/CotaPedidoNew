@@ -1,0 +1,159 @@
+﻿@model PedidoModel
+@{
+    ViewBag.Title = "Listar Pedidos";
+    var cadastrado = TempData["Success"] != null ? Convert.ToBoolean(TempData["Success"]) : false;
+}
+<div class="container">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-116846057-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+       function gtag(){dataLayer.push(arguments);}
+       gtag('js', new Date());
+       gtag('config', 'UA-116846057-1');
+    </script>
+    <div class="col-lg-12 col-md-12 col-sm-12">
+        <div class="white-container">
+            <div class="row">
+                <div class="col-lg-12 col-sm-12 hero-feature">
+                    <h4 class="title">MEUS PEDIDOS</h4>
+                </div>
+            </div>
+            <div class="row">
+                @using (Html.BeginForm("Index", "Compras", FormMethod.Post, new { @id = "formFiltro" }))
+                {
+                    @Html.AntiForgeryToken();
+                    <div class="col-lg-12 col-sm-12 hero-feature">
+                        @if (cadastrado)
+                        {
+                            <div class="row">
+                                <div class="col-md-12 col-lg-12 col-sm-12">
+                                    <div class="alert alert-dismissable alert-success">
+                                        <button type="button" class="close" data-dismiss="alert">×</button>
+                                        <ul><li>Comprador cadastrado com sucesso!</li></ul>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
+                        @if (TempData["PedidoCadastrado"] != null)
+                        {
+                            <div class="row">
+                                <div class="col-md-12 col-lg-12 col-sm-12">
+                                    <div class="alert alert-dismissable alert-success">
+                                        <button type="button" class="close" data-dismiss="alert">×</button>
+                                        Seu pedido foi cadastrado com sucesso!
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
+                        @if (TempData["PedidoAlterado"] != null)
+                        {
+                            <div class="row">
+                                <div class="col-md-12 col-lg-12 col-sm-12">
+                                    <div class="alert alert-dismissable alert-success">
+                                        <button type="button" class="close" data-dismiss="alert">×</button>
+                                        Seu pedido foi alterado com sucesso!
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
+                        @if (TempData["PedidoPublicado"] != null)
+                        {
+                            <div class="row">
+                                <div class="col-md-12 col-lg-12 col-sm-12">
+                                    <div class="alert alert-dismissable alert-success">
+                                        <button type="button" class="close" data-dismiss="alert">×</button>
+                                        Seu pedido foi publicado com sucesso!
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
+                        @if (TempData["PedidoCancelado"] != null)
+                        {
+                            <div class="row">
+                                <div class="col-md-12 col-lg-12 col-sm-12">
+                                    <div class="alert alert-dismissable alert-success">
+                                        <button type="button" class="close" data-dismiss="alert">×</button>
+                                        Seu pedido foi cancelado com sucesso!
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                <table class="table table-bordered tbl-checkout">
+                                    <tbody>
+                                        <tr>
+                                            <td style="width: 45%;">
+                                                <span>Categoria Principal</span><br />
+                                                @Html.DropDownListFor(c => c.FiltroIdCategoria, Model.ObterSelectCategorias(), 
+                                             "Selecione a categoria", new { id = "categoria", @class = "form-control" })
+                                            </td>
+                                            <td style="width: 45%;">
+                                                <span>Descrição Categoria Principal</span><br />
+                                                @Html.TextBoxFor(c => c.FiltroDescricaoCategoria, new { @class = "form-control" })
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                <table class="table table-bordered tbl-checkout">
+                                    <tbody>
+                                        <tr>
+                                            <td style="width: 45%;">
+                                                <span>Subcategoria</span><br />
+                                                @Html.DropDownListFor(c => c.FiltroIdSubCategoria, Model.ObterSelectSubCategorias(), "Selecione a subcategoria", new { id = "subcategoria", @class = "form-control" })
+                                            </td>
+                                            <td style="width: 45%;">
+                                                <span>Data Limite Proposta</span><br />
+                                                @Html.TextBoxFor(x => x.FiltroDataLimiteProposta, new { @class = "form-control", id = "dataLimiteProposta" })
+                                                @Html.ValidationMessageFor(x => x.FiltroDataLimiteProposta)
+                                            </td>
+                                            <td width="10%" style="text-align: center;">
+                                                <div class="btn-group btns-cart">
+                                                    <button type="submit" class="btn btn-primary" id="btnIniciar">Pesquisar</button>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <a href="/Compras/Solicitar" class="btn btn-primary" title="Novo Pedido">Novo Pedido</a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                }
+                <div class="col-lg-12 col-sm-12 hero-feature" id="listagem">
+                    @Html.Partial("_ListarPedidos")
+                </div>                
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    @Scripts.Render("~/ListarCompras")
+<script>
+      function ChangeSituation(idPedido, page)
+      {
+        $.post("@Url.Action("PublicarPedido", "Compras")", { idPedido })
+          .done(function (data) {
+            console.log(data);
+          })
+          .catch(function (error) {
+            console.log(error);
+          })
+          .always(function () {            
+            window.location.href = "@Url.Action("Index","Compras")?page=" + page;            
+          });
+      }
+</script>
+}

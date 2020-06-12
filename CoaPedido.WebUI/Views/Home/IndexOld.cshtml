@@ -1,0 +1,295 @@
+﻿@model CotacaoModel
+@{
+  ViewBag.Title = "Página Inicial";
+}
+<section id="slider">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12">
+        <div id="slider-carousel" class="carousel slide" data-ride="carousel">
+          <ol class="carousel-indicators">
+            <li data-target="#slider-carousel" data-slide-to="0" class="active"></li>
+            <li data-target="#slider-carousel" data-slide-to="1"></li>
+            @*<li data-target="#slider-carousel" data-slide-to="2"></li>*@
+          </ol>
+
+          <div class="carousel-inner">
+            <div class="item active">
+              <div class="col-sm-12">
+                <img src="~/Content/images/home/banners/Banner2-1200.jpg" class="girl img-responsive" alt="" />
+              </div>
+            </div>
+            <div class="item">
+              <div class="col-sm-12">
+                <img src="~/Content/images/home/banners/Banner1-1200.jpg" class="girl img-responsive" alt="" />
+              </div>
+            </div>
+
+            @*<div class="item">
+                  <div class="col-sm-6">
+                      <h1><span>E</span>-SHOPPER</h1>
+                      <h2>Free Ecommerce Template</h2>
+                      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
+                      <button type="button" class="btn btn-default get">Get it now</button>
+                  </div>
+                  <div class="col-sm-6">
+                      <img src="~/Content/images/home/girl3.jpg" class="girl img-responsive" alt="" />
+                      <img src="~/Content/images/home/pricing.png" class="pricing" alt="" />
+                  </div>
+              </div>*@
+          </div>
+
+          <a href="#slider-carousel" class="left control-carousel hidden-xs" data-slide="prev">
+            <i class="fa fa-angle-left"></i>
+          </a>
+          <a href="#slider-carousel" class="right control-carousel hidden-xs" data-slide="next">
+            <i class="fa fa-angle-right"></i>
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section><!--/slider-->
+
+<section>
+  <div class="container">
+    <div class="row">
+      @Html.Partial("_FilterCategorySubCategory")
+      @Html.Partial("_MenuLateral", Model)
+      <div class="col-sm-9 padding-right">
+        <div class="features_items">
+          <!--features_items-->
+          <h2 class="title text-center">Pedidos em Destaque</h2>
+          @foreach (var pedido in Model.Pedidos)
+          {
+            if (pedido.Itens.Count() > 0)
+            {
+              var imagem = Model.Categorias.Where(c => c.Id == pedido.IdCategoriaPrincipal).Select(c => c.Imagem).First();
+              <div class="col-sm-4">
+                <div class="product-image-wrapper">
+                  <div class="single-products">
+                    <div class="productinfo text-center">
+                      <img src="@imagem" alt="" />
+                      @if (pedido.Itens.Count() > 0)
+                      {
+                        <h2>
+                          @if (pedido.Itens.First().Descricao.Length > 42)
+                          {
+                            @pedido.Itens.First().Descricao.Substring(0, 42)
+                          }
+                          else
+                          {
+                            @pedido.Itens.First().Descricao
+                          }
+                        </h2>
+                        <p>Quantidade: @pedido.Itens.First().Quantidade.Value.ToString("#,##")</p>
+                      }
+                      else
+                      {
+                        <h2>Sem descrição</h2>
+                      }
+
+                      @if (pedido.Validade.HasValue)
+                      {
+                        <p>Validade: @pedido.Validade.Value.ToString("dd/MM/yyyy")</p>
+                      }
+
+                      <a href="@Url.RouteUrl("VendasDetalhesPedido", new { name = @pedido.Itens.First().Descricao.FriendlyURL(), id = pedido.Id })" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Visualizar</a>
+
+                    </div>
+                    <div class="product-overlay">
+                      <div class="overlay-content">
+                        @if (pedido.Itens.Count() > 0)
+                        {
+                          <h2>
+                            @if (pedido.Itens.First().Descricao.Length > 42)
+                            {
+                              @pedido.Itens.First().Descricao.Substring(0, 42)
+                            }
+                            else
+                            {
+                              @pedido.Itens.First().Descricao
+                            }
+                          </h2>
+                          <p>Quantidade: @pedido.Itens.First().Quantidade.Value.ToString("#,##")</p>
+                        }
+                        else
+                        {
+                          <h2>Sem descrição</h2>
+                        }
+                        @if (pedido.Validade.HasValue)
+                        {
+                          <p>Validade: @pedido.Validade.Value.ToString("dd/MM/yyyy")</p>
+                        }
+                        <a href="@Url.RouteUrl("VendasDetalhesPedido", new { name = @pedido.Itens.First().Descricao.FriendlyURL(), id = pedido.Id })" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Visualizar</a>
+                      </div>
+                    </div>
+                  </div>
+                  @*<div class="choose">
+                        <ul class="nav nav-pills nav-justified">
+                            <li><a href="#"><i class="fa fa-plus-square"></i>Add to wishlist</a></li>
+                            <li><a href="#"><i class="fa fa-plus-square"></i>Add to compare</a></li>
+                        </ul>
+                    </div>*@
+                </div>
+              </div>
+            }
+          }
+        </div><!--features_items-->
+
+        <div class="category-tab">
+          <!--category-tab-->
+          <div class="col-sm-12">
+            <ul class="nav nav-tabs">
+              @{
+                var active = true;
+                var rand = new Random();
+                var i = 0;
+
+                var categorias = Model.Categorias.Skip(rand.Next(Model.Categorias.Count())).Take(4).ToList();
+
+                foreach (var categoria in categorias)
+                {
+                  if (i < 5)
+                  {
+                    if (active)
+                    {
+                      <li class="active" style="width: 25%; text-align: center;"><a href="#aba-@categoria.Id" data-toggle="tab">@categoria.Nome</a></li>
+                      active = false;
+                    }
+                    else
+                    {
+                      <li style="width: 25%; text-align: center;"><a href="#aba-@categoria.Id" data-toggle="tab">@categoria.Nome</a></li>
+                    }
+                  }
+                }
+              }
+            </ul>
+          </div>
+
+          <div class="tab-content">
+            @{
+              active = true;
+              i = 0;
+
+              foreach (var categoria in categorias)
+              {
+                <div class="tab-pane fade in" id="aba-@categoria.Id">
+                  @foreach (var cotacao in Model.Cotacoes.Where(c => c.Pedido.IdCategoriaPrincipal == categoria.Id).ToList())
+                  {
+                    <div class="col-sm-3">
+                      <div class="product-image-wrapper">
+                        <div class="single-products">
+                          <div class="productinfo text-center">
+                            <img src="@categoria.Imagem" alt="" />
+                            <h2>@cotacao.Pedido.Itens.First().Descricao - @cotacao.Pedido.Itens.First().Quantidade.Value.ToString("#,##")</h2>
+                            <p>Validade: @cotacao.Pedido.Validade.Value.ToString("dd/MM/yyyy")</p>
+                            <a href="@Url.RouteUrl("VendasVisualizarCotacao", new { name=cotacao.Pedido.Itens.First().Descricao.FriendlyURL(), id= cotacao.Id })" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Visualizar</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  }
+                </div>
+
+                @*if (active)
+                  {
+
+                      active = false;
+                  }
+                  else
+                  {
+                      <div class="tab-pane fade" id="aba-@categoria.Id">
+                          @foreach (var cotacao in Model.Cotacoes.Where(c => c.Pedido.IdCategoriaPrincipal == categoria.Id).ToList())
+                          {
+                              <div class="col-sm-3">
+                                  <div class="product-image-wrapper">
+                                      <div class="single-products">
+                                          <div class="productinfo text-center">
+                                              <img src="@categoria.Imagem" alt="" />
+                                              <h2>@cotacao.Pedido.Itens.First().Descricao - @cotacao.Pedido.Itens.First().Quantidade.Value.ToString("#,##")</h2>
+                                              <p>Validade: @cotacao.Pedido.Validade.Value.ToString("dd/MM/yyyy")</p>
+                                              <a href="/Vendas/VisualizarCotacao/@cotacao.Id" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Visualizar</a>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          }
+                      </div>
+                  }*@
+              }
+            }
+          </div>
+        </div><!--/category-tab-->
+
+        <div class="recommended_items">
+          <!--recommended_items-->
+          <h2 class="title text-center">Cotações Recomendadas</h2>
+
+          <div id="recommended-item-carousel" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner">
+              <div class="item active">
+                @if (Model.Cotacoes.Count > 0)
+                {
+                  foreach (var cotacao in Model.Cotacoes.GetRange(0, Model.Cotacoes.Count > 3 ? 3 : Model.Cotacoes.Count))
+                  {
+                    var imagem = Model.Categorias.Where(c => c.Id == cotacao.Pedido.IdCategoriaPrincipal).Select(c => c.Imagem).First();
+                    <div class="col-sm-4">
+                      <div class="product-image-wrapper">
+                        <div class="single-products">
+                          <div class="productinfo text-center">
+                            <img src="@imagem" alt="" />
+                            <h2>@cotacao.Pedido.Itens.First().Descricao - @cotacao.Pedido.Itens.First().Quantidade.Value.ToString("#,##")</h2>
+                            <p>Validade: @cotacao.Pedido.Validade.Value.ToString("dd/MM/yyyy")</p>
+                            <a href="@Url.RouteUrl("VendasDetalhesPedido", new { name = cotacao.Pedido.Itens.First().Descricao.FriendlyURL(), id = cotacao.Pedido.Id})" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Visualizar</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  }
+                }
+                else
+                {
+                  <br /><br /><br /><br /><br /><br /><br />
+                }
+              </div>
+              <div class="item">
+                @if (Model.Cotacoes.Count > 3)
+                {
+                  foreach (var cotacao in Model.Cotacoes.GetRange(3, Model.Cotacoes.Count > 6 ? 3 : (Model.Cotacoes.Count - 3)))
+                  {
+                    var imagem = Model.Categorias.Where(c => c.Id == cotacao.Pedido.IdCategoriaPrincipal && cotacao.Pedido.SituacaoPedido == SituacaoPedido.EmAberto).Select(c => c.Imagem).First();
+                    <div class="col-sm-4">
+                      <div class="product-image-wrapper">
+                        <div class="single-products">
+                          <div class="productinfo text-center">
+                            <img src="@imagem" alt="" />
+                            <h2>@cotacao.Pedido.Itens.First().Descricao - @cotacao.Pedido.Itens.First().Quantidade.Value.ToString("#,##")</h2>
+                            <p>Validade: @cotacao.Pedido.Validade.Value.ToString("dd/MM/yyyy")</p>
+                            <a href="@Url.RouteUrl("VendasDetalhesPedido", new { name = cotacao.Pedido.Itens.First().Descricao.FriendlyURL(), id = cotacao.Pedido.Id})" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Visualizar</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  }
+                }
+                else
+                {
+                  <br /><br /><br /><br /><br /><br /><br />
+                }
+              </div>
+            </div>
+
+            <a class="left recommended-item-control" href="#recommended-item-carousel" data-slide="prev">
+              <i class="fa fa-angle-left"></i>
+            </a>
+            <a class="right recommended-item-control" href="#recommended-item-carousel" data-slide="next">
+              <i class="fa fa-angle-right"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

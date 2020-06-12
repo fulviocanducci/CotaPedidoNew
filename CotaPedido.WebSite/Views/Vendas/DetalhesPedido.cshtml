@@ -1,0 +1,109 @@
+﻿@model CotacaoModel
+
+@{
+    ViewBag.Title = "DetalhesPedido";
+}
+
+<div class="container">
+    <div class="col-lg-12 col-md-12 col-sm-12">
+        <div class="white-container">
+            <span class="title">DETALHES DO PEDIDO</span>
+            <div class="row">
+                <div class="col-lg-12 col-sm-12 hero-feature">
+                    @if (!ViewData.ModelState.IsValid)
+                    {
+                        <div class="row">
+                            <div class="col-md-12 col-lg-12 col-sm-12">
+                                <div class="alert alert-dismissable alert-danger">
+                                    <button type="button" class="close" data-dismiss="alert">×</button>
+                                    @Html.ValidationSummary()
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                    @using (Html.BeginForm("Cotar", "Vendas", new { id = Model.Pedido.Id }, FormMethod.Post ))
+                    {
+                        <div class="btn-group btns-cart">
+                            <button type="submit" class="btn btn-primary" id="btnIncluir">Iniciar Cotação</button>
+                        </div>
+                    }
+                    <br /><br />
+
+                    <table class="table table-bordered tbl-checkout">
+                        <tbody>
+                            <tr>
+                                <td style="width: 180px;">Categoria Principal</td>
+                                <td>
+                                    @Model.Pedido.Categoria.Nome
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <table id="produtos" class="table table-bordered tbl-cart">
+                        <thead>
+                            <tr>
+                                <td>Produto</td>
+                                <td>Categoria</td>
+                                <td>Subcategoria</td>
+                                <td class="td-qty">Quantidade</td>
+                                <td>Un. Medida</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.Pedido.Itens.Count == 0)
+                            {
+                                <tr><td colspan="5">Sem itens para listar.</td></tr>
+                            }
+                            else
+                            {
+                                foreach (var item in Model.Pedido.Itens)
+                                {
+                                    <tr>
+                                        <td class="hidden-xs">
+                                            @item.Descricao
+                                        </td>
+                                        <td>
+                                            @item.IdCategoria
+                                        </td>
+                                        <td>
+                                            @item.SubCategoria
+                                        </td>
+                                        <td>
+                                            @item.Quantidade
+                                        </td>
+                                        <td>
+                                            @item.IdUnidade
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div id="modelAlert" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Alerta!</h4>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Ok</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section ScriptsValidation{
+    @Scripts.Render("~/NovaCompra")
+}

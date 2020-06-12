@@ -1,0 +1,122 @@
+﻿@model CotaPedido.WebUI.Models.ViewModelCadastro
+@{
+  ViewBag.Title = "Cadastros";
+  Layout = "~/Views/Shared/_LayoutSite.cshtml";
+}
+  <section class="banner como-funciona">
+    <h1>Cadastro de @ViewBag.TypeCadastro</h1>
+  </section>
+<section class="cadastro conteudo flex">
+  <div class="dados-cadastro flex">    
+    @if (ViewBag.Success != null && ViewBag.Success)
+    {
+      <div>
+        <h2>Cadastro efetuado com êxito, para entrar entre no link Login</h2>
+      </div>
+    }
+    <form action="@Url.RouteUrl(ViewBag.RouteNamePost)" method="post" class="conteudo flex">      
+      <ul style="list-style-type:none; margin-top:15px;text-align:left">
+        <li>@Html.ValidationMessageFor(m => m.CadastroReduzido.Email)</li>
+        <li>@Html.ValidationMessageFor(m => m.CadastroReduzido.NomeFantasia)</li>
+        <li>@Html.ValidationMessageFor(m => m.CadastroReduzido.RazaoSocial)</li>
+        <li>@Html.ValidationMessageFor(m => m.CadastroReduzido.Senha)</li>
+        <li>@Html.ValidationMessageFor(m => m.CadastroReduzido.RepitaSenha)</li>
+        <li>@Html.ValidationMessageFor(m => m.CadastroReduzido.UF)</li>
+        <li>@Html.ValidationMessageFor(m => m.CadastroReduzido.IdCidade)</li>
+      </ul>
+      @Html.Hidden("CadastroReduzido.TypeCadastro", ViewBag.TypeCadastro != null ? (string)ViewBag.TypeCadastro : null)
+      <div class="w100-conteudo flex">
+        <div class="dados flex w100">
+          <i class="fas fa-envelope"></i>
+          @Html.TextBoxFor(m => m.CadastroReduzido.Email, new { @class = "w100", required = "required", autocomplete = "off", placeholder = "E-mail" })          
+        </div>
+        <div class="dados flex w50">
+          <i class="fas fa-user"></i>
+          @Html.TextBoxFor(m => m.CadastroReduzido.NomeFantasia, new { required = "required", autocomplete = "off", placeholder = "Nome" })
+        </div>
+        <div class="dados flex w50">
+          <i class="fas fa-user"></i>
+          @Html.TextBoxFor(m => m.CadastroReduzido.RazaoSocial, new { required = "required", autocomplete = "off", placeholder = "Nome Completo" })          
+        </div>
+        <div class="dados flex w50">
+          <i class="fas fa-lock"></i>
+          @Html.PasswordFor(m => m.CadastroReduzido.Senha, new { required = "required", autocomplete = "off", placeholder = "Senha" })          
+        </div>
+        <div class="dados flex w50">
+          <i class="fas fa-lock"></i>
+          @Html.PasswordFor(m => m.CadastroReduzido.RepitaSenha, new { @class = "w50", required = "required", autocomplete = "off", placeholder = "Repita senha" })          
+        </div>
+        <div class="dados flex w33">
+          <i class="fas fa-map-marked-alt"></i>
+          @Html.EnumDropDownListFor(x => x.CadastroReduzido.UF, "Selecione a UF", new { @class = "form-control", id = "inputUF", required = "required" })
+          
+        </div>
+        <div class="dados flex w66">
+          <i class="fas fa-search-location"></i>
+          @Html.DropDownListFor(x => x.CadastroReduzido.IdCidade, new SelectList(new object[0]),
+          "Selecione a Cidade", new { @class = "form-control", id = "IdCidade", required = "required" })          
+        </div>
+      </div>
+      <button type="submit" class="botao">REGISTRAR</button>
+    </form>
+  </div>  
+</section>
+<section style="margin-top:240px;"></section>
+@section Scripts{
+  @Scripts.Render("~/Cadastro")
+  <script>
+    function get_last_email_login() {
+      var email = window.localStorage.getItem('site_email_login_c');
+      if (email && email !== '') {
+        $("#LoginCompradorModel_Email").val(email);
+      }
+    };
+    function call_cidade_get_uf_id(id, callBack) {
+      $.post("@Url.RouteUrl("CadastroListaCidadeByIdUf")", { id: id })
+        .done(function (data) { callBack(data) })
+        .catch(function (error) {
+          console.error(error);
+        })
+    };
+    function call_uf() {
+      $("#IdCidade").html('<option>Carregando ...</option>');
+          $("#IdCidade").attr('disabled', true);
+          new call_cidade_get_uf_id($("#inputUF").val(), function (response) {
+            var html = "";
+            $.each(response, function (indice, item) {
+              html = html + '<option value="' + item.Id + '">' + item.Nome + '</option>';
+            })
+            $("#IdCidade").removeAttr('disabled');
+            $("#IdCidade").html(html);
+          });
+    };
+    $(document).ready(function () {
+      get_last_email_login();
+      $("#LoginCompradorModel_Email").blur(function () {
+        window.localStorage.setItem('site_email_login_c', $(this).val());
+      });
+      if ($("#inputUF").length > 0) {
+        $("#inputUF").change(function () {
+          call_uf();
+        });
+      }
+      if ($("#inputUF").val()) {
+        call_uf();
+      }
+      //if ($("#inputUF2").length > 0) {
+      //  $("#inputUF2").change(function () {
+      //    $("#IdCidadeCobranca").html('<option>Carregando ...</option>');
+      //    $("#IdCidadeCobranca").attr('disabled', true);
+      //    new call_cidade_get_uf_id($("#inputUF2").val(), function (response) {
+      //      var html = "";
+      //      $.each(response, function (indice, item) {
+      //        html = html + '<option value="' + item.Id + '">' + item.Nome + '</option>';
+      //      })
+      //      $("#IdCidadeCobranca").removeAttr('disabled');
+      //      $("#IdCidadeCobranca").html(html);
+      //    });
+      //  });
+      //}
+    });
+  </script>
+}

@@ -1,0 +1,67 @@
+﻿@model PedidoModel
+@{
+    ViewBag.Title = "Solicitar Pedido";
+}
+
+<div class="container">
+    <div class="col-lg-12 col-md-12 col-sm-12">
+        <div class="white-container">
+            <div class="row">
+                <div class="col-lg-12 col-sm-12 hero-feature">
+                    <h4 class="title">NOVA COMPRA</h4>
+                </div>
+            </div>
+
+            <div class="row">
+                @using (Html.BeginForm("Solicitar", "Compras", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken();
+                    @Html.HiddenFor(x => x.IdComprador)
+                    <div class="col-lg-12 col-sm-12 hero-feature">
+                        @if (!ViewData.ModelState.IsValid)
+                        {
+                            <div class="row">
+                                <div class="col-md-12 col-lg-12 col-sm-12">
+                                    <div class="alert alert-dismissable alert-danger">
+                                        <button type="button" class="close" data-dismiss="alert">×</button>
+                                        @Html.ValidationSummary()
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        <table class="table table-bordered tbl-checkout">
+                            <tbody>
+                                <tr>
+                                    <td width="15%">
+                                        <span>Data Pedido</span><br />
+                                        @Html.TextBoxFor(x => x.DataPedido, new { @class = "form-control", id = "dataPedido", @readonly = "" })
+                                        @Html.ValidationMessageFor(x => x.DataPedido)
+                                    </td>
+                                    <td width="15%">
+                                        <span>Data Limite Proposta</span><br />
+                                        @Html.TextBoxFor(x => x.DataLimiteProposta, new { @class = "form-control", id = "dataLimiteProposta" })
+                                        @Html.ValidationMessageFor(x => x.DataLimiteProposta)
+                                    </td>
+                                    <td width="70%">
+                                        <span>Categoria Principal</span><br />
+                                        @Html.DropDownListFor(x => x.IdCategoriaPrincipal, Model.ObterSelectCategorias(), "Selecione a categoria", new { id = "categoria", @class = "form-control" })
+                                        @Html.ValidationMessageFor(x => x.IdCategoriaPrincipal)
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3">
+                                        <button type="submit" class="btn btn-primary" id="btnIniciar">Iniciar</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    @Scripts.Render("~/jqueryval")
+    @Scripts.Render("~/SolicitarPedido")
+}

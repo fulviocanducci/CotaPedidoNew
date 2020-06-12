@@ -1,0 +1,129 @@
+﻿@model CotacaoModel
+@{
+    ViewBag.Title = "Consultar";
+}
+@{
+    var cadastrado = TempData["Success"] != null ? Convert.ToBoolean(TempData["Success"]) : false;
+}
+
+<div class="container">
+    <div class="col-lg-12 col-md-12 col-sm-12">
+        <div class="white-container">
+            <div class="row">
+                <div class="col-lg-12 col-sm-12 hero-feature">
+                    <h4 class="title">PESQUISAR PEDIDOS</h4>
+                </div>
+            </div>
+
+            <div class="row">
+                @using (Html.BeginForm("Pedidos", "Vendas", FormMethod.Post, new { @id = "formFiltro" }))
+                {
+                    @Html.AntiForgeryToken();
+                    <div class="col-lg-12 col-sm-12 hero-feature">
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                <table class="table table-bordered tbl-checkout">
+                                    <tbody>
+                                        <tr>
+                                            <td style="width: 45%;">
+                                                <span>Região</span><br />
+                                                @Html.DropDownListFor(r => r.CodigoArea, Model.ObterSelectRegioes(), 
+                                                  "Selecione a região", 
+                                                  new { id = "CodigoArea", @class = "form-control" })
+                                            </td>
+                                            <td style="width: 45%;">
+                                                <span>Cidade</span><br />                                                
+                                                @Html.DropDownListFor(c => c.IdCidade, new SelectList(new object[0]),
+                                                "Selecione a cidade", 
+                                                new { id = "IdCidade", @class = "form-control" })
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                <table class="table table-bordered tbl-checkout">
+                                    <tbody>
+                                        <tr>
+                                            <td style="width: 45%;">
+                                                <span>Categoria Principal</span><br />
+                                                @Html.DropDownListFor(c => c.IdCategoria, Model.ObterSelectCategorias(), "Selecione a categoria", new { id = "categoria", @class = "form-control" })
+                                            </td>
+                                            <td style="width: 45%;">
+                                                <span>Descrição Categoria Principal</span><br />
+                                                @Html.TextBoxFor(c => c.DescricaoCategoria, new { @class = "form-control" })
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                <table class="table table-bordered tbl-checkout">
+                                    <tbody>
+                                        <tr>
+                                            <td style="width: 45%;">
+                                                <span>Subcategoria</span><br />
+                                                @Html.DropDownListFor(c => c.IdSubCategoria, Model.ObterSelectSubCategorias(), "Selecione a subcategoria", new { id = "subcategoria", @class = "form-control" })
+                                            </td>
+                                            <td style="width: 45%;">
+                                                <span>Data Limite Proposta</span><br />
+                                                @Html.TextBoxFor(x => x.DataLimiteProposta, new { @class = "form-control", id = "dataLimiteProposta" })
+                                                @Html.ValidationMessageFor(x => x.DataLimiteProposta)
+                                            </td>
+                                            <td width="10%" style="text-align: center;">
+                                                <div class="btn-group btns-cart">
+                                                    <button type="submit" class="btn btn-primary" id="btnIniciar">Pesquisar</button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                }
+                <div class="col-lg-12 col-sm-12 hero-feature" id="listagem">
+                    @Html.Partial("_ListaPedidos")
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    @*@Scripts.Render("~/jqueryval")*@
+    @Scripts.Render("~/SolicitarPedido")
+<script>
+    function call_cidade_get_uf_id(id, callBack) {
+      $.post("@Url.RouteUrl("CadastroListaCidadeByIdRegiao")", { id: id })
+        .done(function (data) { callBack(data) })
+        .catch(function (error) {
+          console.error(error);
+        })
+    };
+    function call_uf() {
+      $("#IdCidade").html('<option>Carregando ...</option>');
+          $("#IdCidade").attr('disabled', true);
+          new call_cidade_get_uf_id($("#CodigoArea").val(), function (response) {
+            var html = "";
+            $.each(response, function (indice, item) {
+              html = html + '<option value="' + item.Id + '">' + item.Nome + '</option>';
+            })
+            $("#IdCidade").removeAttr('disabled');
+            $("#IdCidade").html(html);
+          });
+    };
+    $(document).ready(function () {
+      console.log($("#CodigoArea").length);
+      $("#CodigoArea").change(function () {
+        call_uf();
+      });
+    });
+</script>
+}
+
+

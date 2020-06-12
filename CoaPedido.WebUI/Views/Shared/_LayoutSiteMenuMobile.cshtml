@@ -1,0 +1,19 @@
+﻿@{ Layout = null; }
+<div class="navegacao flex">
+  <div class="logo">
+    <a href=""><img src="/imagens/vinhetas/logo.png" alt="Logo Cota Pedido" width="150"></a>
+  </div>
+  <button class="hamb">
+    <div class="hamb-bar"></div>
+    <div class="hamb-bar"></div>
+    <div class="hamb-bar"></div>
+  </button>
+</div>
+
+<nav class="menu-mobile desativo">
+  @Html.Partial("_MenuUsuario")
+  @Html.Partial("_MenuSite")
+</nav>
+
+
+

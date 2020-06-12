@@ -1,0 +1,121 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{46963851-28A6-4E77-BB5B-B042123D90B0}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CotaPedido.Entidades</RootNamespace>
+    <AssemblyName>CotaPedido.Entidades</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AnexoItem.cs" />
+    <Compile Include="AnexoPedido.cs" />
+    <Compile Include="Assinatura.cs" />
+    <Compile Include="AssinaturaViewModel.cs" />
+    <Compile Include="Busca.cs" />
+    <Compile Include="Cidade.cs" />
+    <Compile Include="Comprador.cs" />
+    <Compile Include="Cotacao.cs" />
+    <Compile Include="Embalagem.cs" />
+    <Compile Include="Enum\AvisoTipo.cs" />
+    <Compile Include="Enum\FormaPagamento.cs" />
+    <Compile Include="Enum\Funcionalidade.cs" />
+    <Compile Include="Enum\SituacaoPedido.cs" />
+    <Compile Include="Enum\UF.cs" />
+    <Compile Include="Estado.cs" />
+    <Compile Include="Filter\CidadeFilter.cs" />
+    <Compile Include="Filter\CotacaoFilter.cs" />
+    <Compile Include="Filter\ItemPedidoFilter.cs" />
+    <Compile Include="Filter\PedidoFilter.cs" />
+    <Compile Include="Grupo.cs" />
+    <Compile Include="ItemCotacao.cs" />
+    <Compile Include="ItemPedido.cs" />
+    <Compile Include="Mensalidade.cs" />
+    <Compile Include="Aviso.cs" />
+    <Compile Include="Pais.cs" />
+    <Compile Include="Pedido.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Regiao.cs" />
+    <Compile Include="SessionVendedor.cs" />
+    <Compile Include="SubGrupo.cs" />
+    <Compile Include="Unidade.cs" />
+    <Compile Include="Vendedor.cs" />
+    <Compile Include="VendedorRegiao.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="Content\bootstrap-theme.css.map" />
+    <None Include="Content\bootstrap-theme.min.css.map" />
+    <None Include="Content\bootstrap.css.map" />
+    <None Include="Content\bootstrap.min.css.map" />
+    <None Include="fonts\glyphicons-halflings-regular.eot" />
+    <None Include="fonts\glyphicons-halflings-regular.ttf" />
+    <None Include="fonts\glyphicons-halflings-regular.woff" />
+    <None Include="fonts\glyphicons-halflings-regular.woff2" />
+    <None Include="packages.config" />
+    <None Include="Scripts\jquery-3.1.0.min.map" />
+    <None Include="Scripts\jquery-3.1.0.slim.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\bootstrap-theme.css" />
+    <Content Include="Content\bootstrap-theme.min.css" />
+    <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap.min.css" />
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\jquery-3.1.0.intellisense.js" />
+    <Content Include="Scripts\jquery-3.1.0.js" />
+    <Content Include="Scripts\jquery-3.1.0.min.js" />
+    <Content Include="Scripts\jquery-3.1.0.slim.js" />
+    <Content Include="Scripts\jquery-3.1.0.slim.min.js" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,134 @@
+﻿@model CotacaoModel
+
+@{
+    ViewBag.Title = "Cotar";
+}
+
+
+<div class="container">
+    <div class="col-lg-12 col-md-12 col-sm-12">
+        <div class="white-container">
+            <span class="title">NOVA COTAÇÃO</span>
+
+            <div class="row">
+                @using (Html.BeginForm("Cotar", "Vendas", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken();
+                        @Html.HiddenFor(x => x.Id)
+                        @Html.HiddenFor(x => x.DataLimiteProposta)
+                        @Html.HiddenFor(x => x.DataCotacao)
+                        @Html.HiddenFor(x => x.Idvendedor)
+                        @Html.HiddenFor(x => x.IdCategoriaPrincipal)
+
+                    <div class="col-lg-12 col-sm-12 hero-feature">
+                        @if (!ViewData.ModelState.IsValid)
+                        {
+                            <div class="row">
+                                <div class="col-md-12 col-lg-12 col-sm-12">
+                                    <div class="alert alert-dismissable alert-danger">
+                                        <button type="button" class="close" data-dismiss="alert">×</button>
+                                        @Html.ValidationSummary()
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
+                        <table class="table table-bordered tbl-checkout">
+                            <tbody>
+                                <tr>
+                                    <td style="width: 180px;">Categoria Principal</td>
+                                    <td>
+                                        @Model.Pedido.Categoria.Nome
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <br />
+                        <br />
+
+                        <table id="produtos" class="table table-bordered tbl-cart">
+                            <thead>
+                                <tr>
+                                    <td>Produto</td>
+                                    <td>Categoria</td>
+                                    <td>Subcategoria</td>
+                                    <td>Un. Medida</td>
+                                    <td class="td-qty">Quantidade</td>
+                                    <td>Valor Unitário</td>
+                                    <td>Total</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model.Pedido.Itens.Count == 0)
+                                {
+                                    <tr><td colspan="5">Sem itens para listar.</td></tr>
+                                }
+                                else
+                                {
+                                    for (var i = 0; i < Model.Pedido.Itens.Count; i++)
+                                    {
+                                        <tr>
+                                            <td class="hidden-xs">
+                                                @Html.DisplayFor(x => x.Pedido.Itens[i].Descricao)
+                                                @Html.HiddenFor(x => x.Itens[i].NomeProduto)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(x => x.Pedido.Itens[i].IdCategoria)
+                                                @Html.HiddenFor(x => x.Itens[i].IdCategoria)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(x => x.Pedido.Itens[i].SubCategoria)
+                                                @Html.HiddenFor(x => x.Itens[i].SubCategoria)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(x => x.Pedido.Itens[i].IdUnidade)
+                                                @Html.HiddenFor(x => x.Itens[i].IdUnidade)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(x => x.Pedido.Itens[i].Quantidade)
+                                                @Html.HiddenFor(x => x.Itens[i].Quantidade)
+                                            </td>
+                                            <td>
+                                                @Html.TextBoxFor(x => x.Itens[i].ValorUnitario, new { @class = "form-control text-right" })
+                                            </td>
+                                            <td>
+                                                @Html.TextBoxFor(x => x.Itens[i].ValorTotal, new { @class = "form-control text-right" })
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                        </table>
+
+                        <br />
+                        <br />
+
+                        <div class="btn-group btns-cart">
+                            <button type="submit" class="btn btn-primary">Finalizar</button>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div id="modelAlert" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Alerta!</h4>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Ok</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

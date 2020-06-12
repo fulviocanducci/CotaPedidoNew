@@ -1,0 +1,155 @@
+﻿@model PedidoModel
+
+@{
+    ViewBag.Title = "Listar Cotações";
+}
+
+<div class="container main-container">
+    <div class="row">
+        <!-- Cart -->
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="col-lg-12 col-sm-12">
+                <span class="title">MINHAS COTAÇÕES</span>
+            </div>
+            <div class="col-lg-12 col-sm-12 hero-feature">
+
+                @if (TempData["CotacaoEditada"] != null)
+                {
+                    <div class="row">
+                        <div class="col-md-12 col-lg-12 col-sm-12">
+                            <div class="alert alert-dismissable alert-success">
+                                <button type="button" class="close" data-dismiss="alert">×</button>
+                                Sua cotação foi editada com sucesso!
+                            </div>
+                        </div>
+                    </div>
+                }
+                <table class="table table-bordered tbl-cart">
+                    <thead>
+                        <tr>
+                            <td class="hidden-xs">Data Cotação</td>
+                            <td>Data Limite Proposta</td>
+                            <td>Categoria Principal</td>
+                            <td>Situação</td>
+                            <td></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="hidden-xs">
+                                11/01/2015
+                            </td>
+                            <td>
+                                11/01/2015
+                            </td>
+                            <td>
+                                Descrição Categoria
+                            </td>
+                            <td>
+                                Pendente
+                            </td>
+                            <td style="text-align: center; color:black !important;">
+                                Editar Cotação | Excluir Cotação | Visualizar Cotação
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="hidden-xs">
+                                11/01/2015
+                            </td>
+                            <td>
+                                11/01/2015
+                            </td>
+                            <td>
+                                Descrição Categoria
+                            </td>
+                            <td>
+                                Pendente
+                            </td>
+                            <td style="text-align: center; color:black !important;">
+                                Editar Cotação | Excluir Cotação | Visualizar Cotação
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="hidden-xs">
+                                11/01/2015
+                            </td>
+                            <td>
+                                11/01/2015
+                            </td>
+                            <td>
+                                Descrição Categoria
+                            </td>
+                            <td>
+                                Pendente
+                            </td>
+                            <td style="text-align: center; color:black !important;">
+                                Editar Cotação | Excluir Cotação | Visualizar Cotação
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="hidden-xs">
+                                11/01/2015
+                            </td>
+                            <td>
+                                11/01/2015
+                            </td>
+                            <td>
+                                Descrição Categoria
+                            </td>
+                            <td>
+                                Pendente
+                            </td>
+                            <td style="text-align: center; color:black !important;">
+                                Editar Cotação | Excluir Cotação | Visualizar Cotação
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="hidden-xs">
+                                11/01/2015
+                            </td>
+                            <td>
+                                11/01/2015
+                            </td>
+                            <td>
+                                Descrição Categoria
+                            </td>
+                            <td>
+                                Pendente
+                            </td>
+                            <td style="text-align: center; color:black !important;">
+                                Editar Cotação | Excluir Cotação | Visualizar Cotação
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="hidden-xs">
+                                11/01/2015
+                            </td>
+                            <td>
+                                11/01/2015
+                            </td>
+                            <td>
+                                Descrição Categoria
+                            </td>
+                            <td>
+                                Pendente
+                            </td>
+                            <td style="text-align: center; color:black !important;">
+                                Editar Cotação | Excluir Cotação | Visualizar Cotação
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- End Cart -->
+    </div>
+</div>
+
+@section ScriptsValidation{
+    @Scripts.Render("~/ListarCompras")
+}
