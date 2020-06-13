@@ -7,6 +7,7 @@
   <div class="dados-login flex">
     <h1>Login</h1>
     <form action="@Url.RouteUrl("LoginViewModelRoutePost")" method="post" class="flex">
+      @Html.TextBoxFor(m => m.Url, new { type= "hidden" })
       @Html.AntiForgeryToken()
       <ul style="list-style-type:none; margin-top:15px;text-align:left">
         <li>@Html.ValidationMessageFor(m => m.Email)</li>
@@ -14,13 +15,11 @@
       </ul>
       <div class="dados flex">
         <i class="fas fa-envelope"></i>
-        <input type="email" name="email" placeholder="Email">
-        @Html.EditorFor(m => m.Email, new { required = "required", autocomplete = "off", placeholder = "E-mail" })
+        @Html.TextBoxFor(m => m.Email, new { required = "required", autocomplete = "off", placeholder = "E-mail" })
       </div>
       <div class="dados flex">
         <i class="fas fa-lock"></i>
-        <input type="password" name="senha" placeholder="Senha">
-        @Html.EditorFor(m => m.Senha, new { required = "required", autocomplete = "off", placeholder = "Senha" })
+        @Html.PasswordFor(m => m.Senha, new { required = "required", autocomplete = "off", placeholder = "Senha" })
       </div>
       <button type="submit" class="botao">CONFIRMAR</button>
     </form>
@@ -30,7 +29,7 @@
     <div class="texto-login">
       <h2>Faça suas cotações ou<br> venda de produtos</h2>
       <p>Descubra as melhores ofertas ou ofereça seus produtos para quem já está interessado em comprar</p>
-      <a href="" class="botao branco">CADASTRE-SE</a>
+      <p><a href="" class="botao branco">CADASTRE-SE</a></p>
     </div>
     <img src="/imagens/vinhetas/login.jpg" alt="">
   </div>

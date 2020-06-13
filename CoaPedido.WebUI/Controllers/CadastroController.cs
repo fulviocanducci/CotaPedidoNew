@@ -5,6 +5,7 @@ using CotaPedido.Entidades.Enum;
 using CotaPedido.Infra.Repositorios.SQLServer;
 using CotaPedido.WebUI.Models;
 using Microsoft.Owin;
+using NPOI.HSSF.Record.Chart;
 using System;
 using System.Linq;
 using System.Web.Mvc;
@@ -420,8 +421,12 @@ namespace CoaPedido.WebUI.Controllers
 
         [HttpGet()]
         [Route("login", Name = "LoginViewModelRouteGet")]
-        public ActionResult LoginViewModel()
+        public ActionResult LoginViewModel(string url)
         {
+            if (!string.IsNullOrEmpty(url))
+            {
+                return View(new CotaPedido.WebUI.Models.LoginViewModel { Url = url });
+            }
             return View();
         }
 
@@ -432,7 +437,44 @@ namespace CoaPedido.WebUI.Controllers
         {            
             if (ModelState.IsValid)
             {
-
+                #region verificando_login_usuario_comprador
+                RepositorioComprador repositorio = new RepositorioComprador();
+                Comprador comprador = repositorio.Get(model.Email.ToLower(), model.Senha);
+                if (comprador != null)
+                {
+                    comprador.Senha = null;
+                    Session.Add("user", comprador);
+                    if (!string.IsNullOrEmpty(model.Url))
+                    {
+                        return Redirect(model.Url);
+                    }
+                    return RedirectToAction("Index", "Compras", null);
+                }
+                else
+                {
+                    #region verificando_login_usuario_vendedor                    
+                    RepositorioVendedor repositorioVendedor = new RepositorioVendedor();
+                    RepositorioAssinatura repositorioAssinatura = new RepositorioAssinatura();
+                    Vendedor vendedor = repositorioVendedor.Get(model.Email.ToLower(), model.Senha);
+                    if (vendedor != null)
+                    {
+                        bool isAssinante = repositorioAssinatura
+                            .GetVendedorIdIsAssinante(vendedor.Id);
+                        Session.Add("userVendedor", SessionVendedor
+                            .Create(vendedor.Id, isAssinante, vendedor.DataCadastro.Value, vendedor.Email, vendedor.NomeFantasia));
+                        if (!string.IsNullOrEmpty(model.Url))
+                        {
+                            return Redirect(model.Url);
+                        }
+                        return RedirectToAction("Index", "Vendas", null);
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Email e/ou senha inválidos");
+                    }
+                    #endregion verificando_login_usuario_vendedor
+                }
+                #endregion verificando_login_usuario_comprador
             }
             return View(model);
         }

@@ -14,5 +14,7 @@ namespace CotaPedido.WebUI.Models
         [StringLength(20, ErrorMessage = "O campo Senha não pode conter mais do que 20 caracteres")]
         [Required(ErrorMessage = "Preencha o campo Senha")]
         public string Senha { get; set; }
+
+        public string Url { get; set; }
     }
 }

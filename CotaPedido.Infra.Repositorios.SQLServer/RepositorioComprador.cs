@@ -35,6 +35,16 @@ namespace CotaPedido.Infra.Repositorios.SQLServer
             return retorno;
         }
 
+        public Comprador Get(string email, string senha)
+        {
+            using (_connection = new SqlConnection(_connectionString))
+            {
+                return _connection
+                    .Query<Comprador>("SELECT * FROM Compradores WHERE Email=@email AND Senha=@senha AND Status=1", new { email, senha })
+                    .FirstOrDefault();
+            }
+        }
+
         #endregion
 
         #region Métodos Publicos

@@ -1,5 +1,9 @@
-﻿using System.Web;
+﻿using PagedList;
+using System.Linq;
+using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
+
 namespace CoaPedido.WebUI.Models
 {
     public sealed class SessionExpireAttribute : ActionFilterAttribute
@@ -18,7 +22,12 @@ namespace CoaPedido.WebUI.Models
             {                
                 if (ctx.Session[SessionName] == null)
                 {
-                    filterContext.Result = new RedirectResult("~/");
+                    RouteValueDictionary routesValues = ctx.Request.RequestContext.RouteData.Values;
+                    var url = string.Join("/", routesValues.Values.Select(c => c.ToString()));                    
+                    filterContext.Result = string.IsNullOrEmpty(url)
+                        ? new RedirectResult("~/login")
+                        : new RedirectResult("~/login?url=/" + url);
+                    
                     return;
                 }
             }

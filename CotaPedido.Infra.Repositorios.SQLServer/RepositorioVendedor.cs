@@ -146,7 +146,7 @@ namespace CotaPedido.Infra.Repositorios.SQLServer
         {
             StringBuilder SQL = new StringBuilder();
             SQL.Append(Query);
-            SQL.Append(" WHERE Email = @Email AND Senha = @senha ");
+            SQL.Append(" WHERE Email = @Email AND Senha = @senha AND Status = 1");
             using (_connection = new SqlConnection(_connectionString))
             {
                 return _connection.Query<Vendedor>(SQL.ToString(), new { Email = email, Senha = senha }).FirstOrDefault();
